@@ -20,10 +20,11 @@ java {
 }
 
 repositories {
-    maven { url = 'https://jitpack.io' }
+    maven { url = 'https://jitpack.io/' }
     maven { url = 'https://repo.papermc.io/repository/maven-public/' }
+    maven { url = 'https://maven.enginehub.org/repo/' }
     exclusiveContent {
-        forRepository { maven { url = 'https://api.modrinth.com/maven' } }
+        forRepository { maven { url = 'https://api.modrinth.com/maven/' } }
         filter { includeGroup 'maven.modrinth' }
     }
 }
@@ -34,6 +35,7 @@ dependencies {
     }
     compileOnly "maven.modrinth:pl3xmap:$pl3xmapVersion"
     compileOnly "com.github.TechFortress:GriefPrevention:$gpVersion"
+    compileOnly "com.sk89q.worldguard:worldguard-bukkit:$wgVersion"
 }
 
 compileJava {

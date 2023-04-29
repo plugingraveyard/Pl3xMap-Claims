@@ -17,18 +17,12 @@ import org.bukkit.OfflinePlayer;
 import org.bukkit.event.Listener;
 
 public class GPHook implements Listener, Hook {
-    public static final List<@NonNull Marker<@NonNull ?>> EMPTY_LIST = new ArrayList<>();
-
     public GPHook() {
         GPConfig.reload();
     }
 
-    public boolean isGPReady() {
-        return GriefPrevention.instance != null;
-    }
-
-    public boolean isWorldEnabled(@NonNull String name) {
-        return isGPReady() && GriefPrevention.instance.claimsEnabledForWorld(Bukkit.getWorld(name));
+    private boolean isWorldEnabled(@NonNull String name) {
+        return GriefPrevention.instance.claimsEnabledForWorld(Bukkit.getWorld(name));
     }
 
     @Override
@@ -38,12 +32,12 @@ public class GPHook implements Listener, Hook {
         }
     }
 
+    @Override
     public @NonNull Collection<@NonNull Marker<@NonNull ?>> getClaims(@NonNull World world) {
         if (!isWorldEnabled(world.getName())) {
             return EMPTY_LIST;
         }
         return GriefPrevention.instance.dataStore.getClaims().stream()
-                .filter(claim -> claim.getLesserBoundaryCorner() != null)
                 .filter(claim -> claim.getLesserBoundaryCorner().getWorld().getName().equals(world.getName()))
                 .map(claim -> new GPClaim(world, claim))
                 .map(claim -> {

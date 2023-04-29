@@ -9,3 +9,4 @@ website: "${website}"
 softdepend:
   - Pl3xMap
   - GriefPrevention
+  - WorldGuard

@@ -14,6 +14,7 @@
 ## Supported claims plugins
 
 * GriefPrevention
+* WorldGuard
 
 Don't see your plugin listed here? Let me know on Discord and I'll see about adding it.
 

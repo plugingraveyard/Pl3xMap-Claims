@@ -59,7 +59,8 @@ public final class GPConfig extends AbstractConfig {
     public static String MARKER_BASIC_FILL_COLOR = "#3300FF00";
     @Key("settings.claim.basic.popup")
     @Comment("Popup for basic claims")
-    public static String MARKER_BASIC_POPUP = "Claim Owner: <span style=\"font-weight:bold;\"><owner></span><trusts>";
+    public static String MARKER_BASIC_POPUP = """
+            Claim Owner: <span style="font-weight:bold;"><owner></span><trusts>""";
 
     @Key("settings.claim.admin.stroke.color")
     @Comment("Stroke color (#AARRGGBB)")
@@ -72,20 +73,25 @@ public final class GPConfig extends AbstractConfig {
     public static String MARKER_ADMIN_FILL_COLOR = "#33ED7117";
     @Key("settings.claim.admin.popup")
     @Comment("Popup for admin claims")
-    public static String MARKER_ADMIN_POPUP = "<span style=\"font-weight:bold;\">Administrator Claim</span><trusts>";
+    public static String MARKER_ADMIN_POPUP = """
+            <span style="font-weight:bold;">Administrator Claim</span><trusts>""";
 
     @Key("settings.claim.popup.trust")
     @Comment("Popup text for trusts if present")
-    public static String MARKER_POPUP_TRUST = "Trust: <span style=\"font-weight:bold;\"><builders></span><br/>";
+    public static String MARKER_POPUP_TRUST = """
+            Trust: <span style="font-weight:bold;"><builders></span><br/>""";
     @Key("settings.claim.popup.container")
     @Comment("Popup text for container trusts if present")
-    public static String MARKER_POPUP_CONTAINER = "Container: <span style=\"font-weight:bold;\"><containers></span><br/>";
+    public static String MARKER_POPUP_CONTAINER = """
+            Container: <span style="font-weight:bold;"><containers></span><br/>""";
     @Key("settings.claim.popup.trust")
     @Comment("Popup text for trusts if present")
-    public static String MARKER_POPUP_ACCESS = "Access: <span style=\"font-weight:bold;\"><accessors></span><br/>";
+    public static String MARKER_POPUP_ACCESS = """
+            Access: <span style="font-weight:bold;"><accessors></span><br/>""";
     @Key("settings.claim.popup.trust")
     @Comment("Popup text for trusts if present")
-    public static String MARKER_POPUP_PERMISSION = "Permission: <span style=\"font-weight:bold;\"><managers></span><br/>";
+    public static String MARKER_POPUP_PERMISSION = """
+            Permission: <span style="font-weight:bold;"><managers></span><br/>""";
 
     private static final GPConfig GP_CONFIG = new GPConfig();
 
