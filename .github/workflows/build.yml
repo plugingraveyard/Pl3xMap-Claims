@@ -15,6 +15,9 @@ jobs:
         with:
           distribution: temurin
           java-version: 17
+      - name: Import gradle properties
+        shell: bash
+        run: cat gradle.properties >> $GITHUB_ENV
       - name: Build
         run: ./gradlew build --stacktrace
       - name: Store artifacts
@@ -22,3 +25,12 @@ jobs:
         with:
           name: Pl3xMap-Claims
           path: build/libs
+      - name: Create Release
+        uses: "marvinpinto/action-automatic-releases@latest"
+        with:
+          repo_token: "${{ secrets.GITHUB_TOKEN }}"
+          automatic_release_tag: "latest"
+          draft: false
+          prerelease: false
+          title: Pl3xMap-Claims ${{ env.minecraftVersion }}-${{ github.run_number }}
+          files: build/libs/*.jar
