@@ -2,12 +2,17 @@ package net.pl3x.map.claims.hook.worldguard;
 
 import com.sk89q.worldedit.bukkit.BukkitAdapter;
 import com.sk89q.worldguard.WorldGuard;
+import com.sk89q.worldguard.protection.flags.Flag;
 import com.sk89q.worldguard.protection.managers.RegionManager;
-import com.sk89q.worldguard.util.profile.cache.ProfileCache;
+import com.sk89q.worldguard.protection.regions.RegionType;
 import java.util.Collection;
+import java.util.HashSet;
+import java.util.Map;
+import java.util.Set;
 import java.util.stream.Collectors;
 import libs.org.checkerframework.checker.nullness.qual.NonNull;
 import net.pl3x.map.claims.hook.Hook;
+import net.pl3x.map.core.markers.Point;
 import net.pl3x.map.core.markers.marker.Marker;
 import net.pl3x.map.core.markers.option.Options;
 import net.pl3x.map.core.util.Colors;
@@ -41,10 +46,18 @@ public class WGHook implements Hook {
         }
         return manager.getRegions().values().stream()
                 .map(region -> new WGClaim(world, region))
+                .filter(claim -> claim.getType() == RegionType.CUBOID || claim.getType() == RegionType.POLYGON)
                 .map(claim -> {
                     String key = "wg-claim-" + claim.getID();
-                    return Marker.rectangle(key, claim.getMin(), claim.getMax())
-                            .setOptions(getOptions(claim));
+                    Marker<?> marker;
+                    if (claim.getType() == RegionType.POLYGON) {
+                        marker = Marker.polygon(key, Marker.polyline(key + "line",
+                                claim.getPoints().stream().map(point ->
+                                        Point.of(point.getX(), point.getZ())).toList()));
+                    } else {
+                        marker = Marker.rectangle(key, claim.getMin(), claim.getMax());
+                    }
+                    return marker.setOptions(getOptions(claim));
                 })
                 .collect(Collectors.toSet());
     }
@@ -59,17 +72,39 @@ public class WGHook implements Hook {
     }
 
     private @NonNull String processPopup(@NonNull String popup, @NonNull WGClaim claim) {
-        ProfileCache pc = WorldGuard.getInstance().getProfileCache();
         return popup.replace("<world>", claim.getWorld().getName())
-                .replace("<id>", claim.getID())
-                .replace("<owner>", claim.getOwners().toPlayersString())
                 .replace("<regionname>", claim.getID())
-                .replace("<playerowners>", claim.getOwners().toPlayersString(pc))
-                .replace("<groupowners>", claim.getOwners().toGroupsString())
-                .replace("<playermembers>", claim.getMembers().toPlayersString(pc))
-                .replace("<groupmembers>", claim.getMembers().toGroupsString())
+                .replace("<owners>", getOwners(claim))
+                .replace("<members>", getMembers(claim))
                 .replace("<parent>", claim.getParent() == null ? "" : claim.getParent().getId())
                 .replace("<priority>", String.valueOf(claim.getPriority()))
-                .replace("<flags>", claim.getFlagsString());
+                .replace("<flags>", getFlags(claim));
+    }
+
+    private String getOwners(WGClaim claim) {
+        Set<String> set = new HashSet<>();
+        set.addAll(claim.getOwners().getPlayers());
+        set.addAll(claim.getOwners().getGroups());
+        return set.isEmpty() ? "" : WGConfig.MARKER_POPUP_OWNERS
+                .replace("<owners>", String.join(", ", set));
+    }
+
+    private String getMembers(WGClaim claim) {
+        Set<String> set = new HashSet<>();
+        set.addAll(claim.getMembers().getPlayers());
+        set.addAll(claim.getMembers().getGroups());
+        return set.isEmpty() ? "" : WGConfig.MARKER_POPUP_MEMBERS
+                .replace("<members>", String.join(", ", set));
+    }
+
+    private String getFlags(WGClaim claim) {
+        Map<Flag<?>, Object> flags = claim.getFlags();
+        Set<String> set = flags.keySet().stream()
+                .map(flag -> WGConfig.MARKER_POPUP_FLAGS_ENTRY
+                        .replace("<flag>", flag.getName())
+                        .replace("<value>", String.valueOf(flags.get(flag))))
+                .collect(Collectors.toSet());
+        return set.isEmpty() ? "" : WGConfig.MARKER_POPUP_FLAGS
+                .replace("<flags>", String.join("<br/>", set));
     }
 }

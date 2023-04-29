@@ -1,11 +1,14 @@
 package net.pl3x.map.claims.hook.worldguard;
 
+import com.sk89q.worldedit.math.BlockVector2;
 import com.sk89q.worldedit.math.BlockVector3;
 import com.sk89q.worldguard.domains.DefaultDomain;
 import com.sk89q.worldguard.protection.flags.Flag;
 import com.sk89q.worldguard.protection.regions.ProtectedRegion;
+import com.sk89q.worldguard.protection.regions.RegionType;
+import java.util.List;
 import java.util.Map;
-import java.util.stream.Collectors;
+import javax.annotation.Nonnull;
 import libs.org.checkerframework.checker.nullness.qual.NonNull;
 import libs.org.checkerframework.checker.nullness.qual.Nullable;
 import net.pl3x.map.core.markers.Point;
@@ -59,10 +62,15 @@ public class WGClaim {
         return this.region.getPriority();
     }
 
-    public @NonNull String getFlagsString() {
-        Map<Flag<?>, Object> flags = region.getFlags();
-        return flags.keySet().stream()
-                .map(flag -> flag.getName() + ": " + flags.get(flag) + "<br/>")
-                .collect(Collectors.joining());
+    public @Nonnull Map<Flag<?>, Object> getFlags() {
+        return this.region.getFlags();
+    }
+
+    public List<BlockVector2> getPoints() {
+        return this.region.getPoints();
+    }
+
+    public RegionType getType() {
+        return this.region.getType();
     }
 }

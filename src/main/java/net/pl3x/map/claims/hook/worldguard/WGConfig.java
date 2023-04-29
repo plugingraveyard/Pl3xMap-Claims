@@ -34,12 +34,28 @@ public final class WGConfig extends AbstractConfig {
     @Key("settings.claim.fill.color")
     @Comment("Fill color (#AARRGGBB)")
     public static String MARKER_FILL_COLOR = "#3300FF00";
-    @Key("settings.claim.popup")
+    @Key("settings.claim.popup.tooltip")
     @Comment("Popup for claims")
     public static String MARKER_POPUP = """
-            <span style="font-size:120%;"><regionname></span><br/>
-            Owner <span style="font-weight:bold;"><playerowners></span><br/>
-            Flags<br/><span style="font-weight:bold;"><flags></span>""";
+            <span style="font-weight:bold;"><regionname></span><br/>
+            <owners><members><flags>""";
+
+    @Key("settings.claim.popup.owners")
+    @Comment("Popup text for owners if present")
+    public static String MARKER_POPUP_OWNERS = """
+            Owners: <span style="font-weight:bold;"><owners></span><br/>""";
+    @Key("settings.claim.popup.members")
+    @Comment("Popup text for members if present")
+    public static String MARKER_POPUP_MEMBERS = """
+            Members: <span style="font-weight:bold;"><members></span><br/>""";
+    @Key("settings.claim.popup.flags")
+    @Comment("Popup text for flags if present")
+    public static String MARKER_POPUP_FLAGS = """
+            Flags:<br/><span style="display:inline-block;margin-left:10px"><flags></span><br/>""";
+    @Key("settings.claim.popup.flag-entry")
+    @Comment("How each flag entry should look")
+    public static String MARKER_POPUP_FLAGS_ENTRY = """
+            <span style="font-weight:bold;"><flag></span>: <value>""";
 
     private static final WGConfig WG_CONFIG = new WGConfig();
 
