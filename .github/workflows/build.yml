@@ -20,17 +20,19 @@ jobs:
         run: cat gradle.properties >> $GITHUB_ENV
       - name: Build
         run: ./gradlew build --stacktrace
-      - name: Store artifacts
-        uses: actions/upload-artifact@v2
+      - name: Publish to Modrinth
+        run: ./gradlew modrinth_nobuild --stacktrace
+        env:
+          MODRINTH_TOKEN: ${{ secrets.MODRINTH_TOKEN }}
+          COMMIT_MESSAGE: ${{ join(github.event.commits.*.message, '<br>') }}
+        continue-on-error: true
+      - name: Notify Discord
+        uses: sarisia/actions-status-discord@v1
+        if: success()
         with:
-          name: Pl3xMap-Claims
-          path: build/libs
-      - name: Create Release
-        uses: "marvinpinto/action-automatic-releases@latest"
-        with:
-          repo_token: "${{ secrets.GITHUB_TOKEN }}"
-          automatic_release_tag: "latest"
-          draft: false
-          prerelease: false
-          title: Pl3xMap-Claims ${{ env.minecraftVersion }}-${{ github.run_number }}
-          files: build/libs/*.jar
+          webhook: ${{ secrets.DISCORD_WEBHOOK }}
+          nodetail: true
+          title: New build of Pl3xMap-Claims is ready!
+          description: |
+            Version ${{ env.minecraftVersion }} build ${{ github.run_number }}
+            Click [here](https://modrinth.com/mod/pl3xmap-claims/version/${{ env.minecraftVersion }}-${{ github.run_number }}) to download!
