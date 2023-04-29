@@ -17,7 +17,7 @@ public final class WGConfig extends AbstractConfig {
     public static boolean LAYER_DEFAULT_HIDDEN = false;
     @Key("settings.layer.update-interval")
     @Comment("Update interval for map layer")
-    public static int LAYER_UPDATE_INTERVAL = 300;
+    public static int LAYER_UPDATE_INTERVAL = 30;
     @Key("settings.layer.priority")
     @Comment("Priority for map layer")
     public static int LAYER_PRIORITY = 10;
