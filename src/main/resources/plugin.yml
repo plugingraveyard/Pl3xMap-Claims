@@ -1,0 +1,11 @@
+name: "${name}"
+main: "${group}.Pl3xMapClaims"
+version: "${version}"
+api-version: "1.19"
+load: "POSTWORLD"
+authors: ${authors}
+description: "${description}"
+website: "${website}"
+softdepend:
+  - Pl3xMap
+  - GriefPrevention
