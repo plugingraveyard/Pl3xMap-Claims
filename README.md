@@ -16,11 +16,13 @@
 * GriefPrevention
 * WorldGuard
 
-Don't see your plugin listed here? Let me know on Discord and I'll see about adding it.
+Don't see your claim plugin listed here? Let me know on Discord, and I'll see about adding it.
 
 ## Downloads
 
-Downloads are available in the menu to the right under `Releases`.
+Downloads are available on Modrinth.
+
+[![Download on Modrinth](https://i.imgur.com/5C4fVJC.png)](https://modrinth.com/mod/pl3xmap-claims)
 
 ## Installation
 
