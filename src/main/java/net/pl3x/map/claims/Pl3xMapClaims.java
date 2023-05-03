@@ -42,6 +42,7 @@ public final class Pl3xMapClaims extends JavaPlugin {
 
         Arrays.stream(Hook.Impl.values()).forEach(impl -> {
             if (pm.isPluginEnabled(impl.getPluginName())) {
+                getLogger().info("Hooking into " + impl.getPluginName());
                 Hook.add(impl);
             }
         });

@@ -8,5 +8,6 @@ description: "${description}"
 website: "${website}"
 softdepend:
   - Pl3xMap
+  - ClaimChunk
   - GriefPrevention
   - WorldGuard

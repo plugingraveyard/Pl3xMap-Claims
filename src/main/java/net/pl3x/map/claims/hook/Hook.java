@@ -30,6 +30,7 @@ import java.util.Map;
 import java.util.function.Supplier;
 import libs.org.checkerframework.checker.nullness.qual.NonNull;
 import libs.org.checkerframework.checker.nullness.qual.Nullable;
+import net.pl3x.map.claims.hook.claimchunk.CCHook;
 import net.pl3x.map.claims.hook.griefprevention.GPHook;
 import net.pl3x.map.claims.hook.worldguard.WGHook;
 import net.pl3x.map.core.markers.marker.Marker;
@@ -66,6 +67,7 @@ public interface Hook {
     @NonNull Collection<@NonNull Marker<@NonNull ?>> getClaims(@NonNull World world);
 
     enum Impl {
+        CLAIMCHUNK("ClaimChunk", CCHook::new),
         GRIEF_PREVENTION("GriefPrevention", GPHook::new),
         WORLD_GUARD("WorldGuard", WGHook::new);
 

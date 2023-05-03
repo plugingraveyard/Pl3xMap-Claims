@@ -64,7 +64,10 @@ public class Pl3xMapListener implements EventListener, Listener {
 
     @EventHandler
     public void onWorldUnloaded(@NonNull WorldUnloadedEvent event) {
-        event.getWorld().getLayerRegistry().unregister(GPLayer.KEY);
+        try {
+            event.getWorld().getLayerRegistry().unregister(GPLayer.KEY);
+        } catch (Throwable ignore) {
+        }
     }
 
     private void registerWorld(@NonNull World world) {
