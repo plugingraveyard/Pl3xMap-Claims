@@ -29,24 +29,24 @@ import net.pl3x.map.core.markers.layer.WorldLayer;
 import net.pl3x.map.core.markers.marker.Marker;
 import net.pl3x.map.core.world.World;
 
-public class GPLayer extends WorldLayer {
+public class GriefPreventionLayer extends WorldLayer {
     public static final String KEY = "griefprevention";
 
-    private final GPHook gpHook;
+    private final GriefPreventionHook griefPreventionHook;
 
-    public GPLayer(@NonNull GPHook gpHook, @NonNull World world) {
-        super(KEY, world, () -> GPConfig.LAYER_LABEL);
-        this.gpHook = gpHook;
+    public GriefPreventionLayer(@NonNull GriefPreventionHook griefPreventionHook, @NonNull World world) {
+        super(KEY, world, () -> GriefPreventionConfig.LAYER_LABEL);
+        this.griefPreventionHook = griefPreventionHook;
 
-        setShowControls(GPConfig.LAYER_SHOW_CONTROLS);
-        setDefaultHidden(GPConfig.LAYER_DEFAULT_HIDDEN);
-        setUpdateInterval(GPConfig.LAYER_UPDATE_INTERVAL);
-        setPriority(GPConfig.LAYER_PRIORITY);
-        setZIndex(GPConfig.LAYER_ZINDEX);
+        setShowControls(GriefPreventionConfig.LAYER_SHOW_CONTROLS);
+        setDefaultHidden(GriefPreventionConfig.LAYER_DEFAULT_HIDDEN);
+        setUpdateInterval(GriefPreventionConfig.LAYER_UPDATE_INTERVAL);
+        setPriority(GriefPreventionConfig.LAYER_PRIORITY);
+        setZIndex(GriefPreventionConfig.LAYER_ZINDEX);
     }
 
     @Override
     public @NonNull Collection<@NonNull Marker<@NonNull ?>> getMarkers() {
-        return this.gpHook.getClaims(getWorld());
+        return this.griefPreventionHook.getClaims(getWorld());
     }
 }

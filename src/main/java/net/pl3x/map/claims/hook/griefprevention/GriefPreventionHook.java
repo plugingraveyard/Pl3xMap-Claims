@@ -39,9 +39,9 @@ import org.bukkit.Bukkit;
 import org.bukkit.OfflinePlayer;
 import org.bukkit.event.Listener;
 
-public class GPHook implements Listener, Hook {
-    public GPHook() {
-        GPConfig.reload();
+public class GriefPreventionHook implements Listener, Hook {
+    public GriefPreventionHook() {
+        GriefPreventionConfig.reload();
     }
 
     private boolean isWorldEnabled(@NonNull String name) {
@@ -51,7 +51,7 @@ public class GPHook implements Listener, Hook {
     @Override
     public void registerWorld(@NonNull World world) {
         if (isWorldEnabled(world.getName())) {
-            world.getLayerRegistry().register(GPLayer.KEY, new GPLayer(this, world));
+            world.getLayerRegistry().register(new GriefPreventionLayer(this, world));
         }
     }
 
@@ -62,7 +62,7 @@ public class GPHook implements Listener, Hook {
         }
         return GriefPrevention.instance.dataStore.getClaims().stream()
                 .filter(claim -> claim.getLesserBoundaryCorner().getWorld().getName().equals(world.getName()))
-                .map(claim -> new GPClaim(world, claim))
+                .map(claim -> new GriefPreventionClaim(world, claim))
                 .map(claim -> {
                     String key = "gp-claim-" + claim.getID();
                     return Marker.rectangle(key, claim.getMin(), claim.getMax())
@@ -71,25 +71,25 @@ public class GPHook implements Listener, Hook {
                 .collect(Collectors.toSet());
     }
 
-    private @NonNull Options getOptions(@NonNull GPClaim claim) {
+    private @NonNull Options getOptions(@NonNull GriefPreventionClaim claim) {
         Options.Builder builder;
         if (claim.isAdminClaim()) {
             builder = Options.builder()
-                    .strokeWeight(GPConfig.MARKER_ADMIN_STROKE_WEIGHT)
-                    .strokeColor(Colors.fromHex(GPConfig.MARKER_ADMIN_STROKE_COLOR))
-                    .fillColor(Colors.fromHex(GPConfig.MARKER_ADMIN_FILL_COLOR))
-                    .popupContent(processPopup(GPConfig.MARKER_ADMIN_POPUP, claim));
+                    .strokeWeight(GriefPreventionConfig.MARKER_ADMIN_STROKE_WEIGHT)
+                    .strokeColor(Colors.fromHex(GriefPreventionConfig.MARKER_ADMIN_STROKE_COLOR))
+                    .fillColor(Colors.fromHex(GriefPreventionConfig.MARKER_ADMIN_FILL_COLOR))
+                    .popupContent(processPopup(GriefPreventionConfig.MARKER_ADMIN_POPUP, claim));
         } else {
             builder = Options.builder()
-                    .strokeWeight(GPConfig.MARKER_BASIC_STROKE_WEIGHT)
-                    .strokeColor(Colors.fromHex(GPConfig.MARKER_BASIC_STROKE_COLOR))
-                    .fillColor(Colors.fromHex(GPConfig.MARKER_BASIC_FILL_COLOR))
-                    .popupContent(processPopup(GPConfig.MARKER_BASIC_POPUP, claim));
+                    .strokeWeight(GriefPreventionConfig.MARKER_BASIC_STROKE_WEIGHT)
+                    .strokeColor(Colors.fromHex(GriefPreventionConfig.MARKER_BASIC_STROKE_COLOR))
+                    .fillColor(Colors.fromHex(GriefPreventionConfig.MARKER_BASIC_FILL_COLOR))
+                    .popupContent(processPopup(GriefPreventionConfig.MARKER_BASIC_POPUP, claim));
         }
         return builder.build();
     }
 
-    private @NonNull String processPopup(@NonNull String popup, @NonNull GPClaim claim) {
+    private @NonNull String processPopup(@NonNull String popup, @NonNull GriefPreventionClaim claim) {
         return popup.replace("<world>", claim.getWorld().getName())
                 .replace("<id>", Long.toString(claim.getID()))
                 .replace("<owner>", claim.getOwnerName())
@@ -99,7 +99,7 @@ public class GPHook implements Listener, Hook {
                 .replace("<height>", Integer.toString(claim.getHeight()));
     }
 
-    private String getTrusts(@NonNull GPClaim claim) {
+    private @NonNull String getTrusts(@NonNull GriefPreventionClaim claim) {
         ArrayList<String> builders = new ArrayList<>();
         ArrayList<String> containers = new ArrayList<>();
         ArrayList<String> accessors = new ArrayList<>();
@@ -108,19 +108,19 @@ public class GPHook implements Listener, Hook {
         StringBuilder sb = new StringBuilder();
         if (!builders.isEmpty()) {
             if (sb.isEmpty()) sb.append("<hr/>");
-            sb.append(GPConfig.MARKER_POPUP_TRUST.replace("<builders>", getNames(builders)));
+            sb.append(GriefPreventionConfig.MARKER_POPUP_TRUST.replace("<builders>", getNames(builders)));
         }
         if (!containers.isEmpty()) {
             if (sb.isEmpty()) sb.append("<hr/>");
-            sb.append(GPConfig.MARKER_POPUP_CONTAINER.replace("<containers>", getNames(containers)));
+            sb.append(GriefPreventionConfig.MARKER_POPUP_CONTAINER.replace("<containers>", getNames(containers)));
         }
         if (!accessors.isEmpty()) {
             if (sb.isEmpty()) sb.append("<hr/>");
-            sb.append(GPConfig.MARKER_POPUP_ACCESS.replace("<accessors>", getNames(accessors)));
+            sb.append(GriefPreventionConfig.MARKER_POPUP_ACCESS.replace("<accessors>", getNames(accessors)));
         }
         if (!managers.isEmpty()) {
             if (sb.isEmpty()) sb.append("<hr/>");
-            sb.append(GPConfig.MARKER_POPUP_PERMISSION.replace("<managers>", getNames(managers)));
+            sb.append(GriefPreventionConfig.MARKER_POPUP_PERMISSION.replace("<managers>", getNames(managers)));
         }
         return sb.toString();
     }

@@ -43,9 +43,9 @@ import net.pl3x.map.core.world.World;
 import org.bukkit.Bukkit;
 import org.checkerframework.checker.nullness.qual.Nullable;
 
-public class WGHook implements Hook {
-    public WGHook() {
-        WGConfig.reload();
+public class WorldGuardHook implements Hook {
+    public WorldGuardHook() {
+        WorldGuardConfig.reload();
     }
 
     private @Nullable RegionManager getRegionManager(@NonNull World world) {
@@ -57,7 +57,7 @@ public class WGHook implements Hook {
     @Override
     public void registerWorld(@NonNull World world) {
         if (getRegionManager(world) != null) {
-            world.getLayerRegistry().register(WGLayer.KEY, new WGLayer(this, world));
+            world.getLayerRegistry().register(new WorldGuardLayer(this, world));
         }
     }
 
@@ -68,7 +68,7 @@ public class WGHook implements Hook {
             return EMPTY_LIST;
         }
         return manager.getRegions().values().stream()
-                .map(region -> new WGClaim(world, region))
+                .map(region -> new WorldGuardClaim(world, region))
                 .filter(claim -> claim.getType() == RegionType.CUBOID || claim.getType() == RegionType.POLYGON)
                 .map(claim -> {
                     String key = "wg-claim-" + claim.getID();
@@ -85,16 +85,16 @@ public class WGHook implements Hook {
                 .collect(Collectors.toSet());
     }
 
-    private @NonNull Options getOptions(@NonNull WGClaim claim) {
+    private @NonNull Options getOptions(@NonNull WorldGuardClaim claim) {
         return Options.builder()
-                .strokeWeight(WGConfig.MARKER_STROKE_WEIGHT)
-                .strokeColor(Colors.fromHex(WGConfig.MARKER_STROKE_COLOR))
-                .fillColor(Colors.fromHex(WGConfig.MARKER_FILL_COLOR))
-                .popupContent(processPopup(WGConfig.MARKER_POPUP, claim))
+                .strokeWeight(WorldGuardConfig.MARKER_STROKE_WEIGHT)
+                .strokeColor(Colors.fromHex(WorldGuardConfig.MARKER_STROKE_COLOR))
+                .fillColor(Colors.fromHex(WorldGuardConfig.MARKER_FILL_COLOR))
+                .popupContent(processPopup(WorldGuardConfig.MARKER_POPUP, claim))
                 .build();
     }
 
-    private @NonNull String processPopup(@NonNull String popup, @NonNull WGClaim claim) {
+    private @NonNull String processPopup(@NonNull String popup, @NonNull WorldGuardClaim claim) {
         return popup.replace("<world>", claim.getWorld().getName())
                 .replace("<regionname>", claim.getID())
                 .replace("<owners>", getOwners(claim))
@@ -104,30 +104,30 @@ public class WGHook implements Hook {
                 .replace("<flags>", getFlags(claim));
     }
 
-    private String getOwners(WGClaim claim) {
+    private @NonNull String getOwners(@NonNull WorldGuardClaim claim) {
         Set<String> set = new HashSet<>();
         set.addAll(claim.getOwners().getPlayers());
         set.addAll(claim.getOwners().getGroups());
-        return set.isEmpty() ? "" : WGConfig.MARKER_POPUP_OWNERS
+        return set.isEmpty() ? "" : WorldGuardConfig.MARKER_POPUP_OWNERS
                 .replace("<owners>", String.join(", ", set));
     }
 
-    private String getMembers(WGClaim claim) {
+    private @NonNull String getMembers(@NonNull WorldGuardClaim claim) {
         Set<String> set = new HashSet<>();
         set.addAll(claim.getMembers().getPlayers());
         set.addAll(claim.getMembers().getGroups());
-        return set.isEmpty() ? "" : WGConfig.MARKER_POPUP_MEMBERS
+        return set.isEmpty() ? "" : WorldGuardConfig.MARKER_POPUP_MEMBERS
                 .replace("<members>", String.join(", ", set));
     }
 
-    private String getFlags(WGClaim claim) {
+    private @NonNull String getFlags(@NonNull WorldGuardClaim claim) {
         Map<Flag<?>, Object> flags = claim.getFlags();
         Set<String> set = flags.keySet().stream()
-                .map(flag -> WGConfig.MARKER_POPUP_FLAGS_ENTRY
+                .map(flag -> WorldGuardConfig.MARKER_POPUP_FLAGS_ENTRY
                         .replace("<flag>", flag.getName())
                         .replace("<value>", String.valueOf(flags.get(flag))))
                 .collect(Collectors.toSet());
-        return set.isEmpty() ? "" : WGConfig.MARKER_POPUP_FLAGS
+        return set.isEmpty() ? "" : WorldGuardConfig.MARKER_POPUP_FLAGS
                 .replace("<flags>", String.join("<br/>", set));
     }
 }

@@ -1,3 +1,26 @@
+/*
+ * MIT License
+ *
+ * Copyright (c) 2020-2023 William Blake Galbreath
+ *
+ * Permission is hereby granted, free of charge, to any person obtaining a copy
+ * of this software and associated documentation files (the "Software"), to deal
+ * in the Software without restriction, including without limitation the rights
+ * to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+ * copies of the Software, and to permit persons to whom the Software is
+ * furnished to do so, subject to the following conditions:
+ *
+ * The above copyright notice and this permission notice shall be included in all
+ * copies or substantial portions of the Software.
+ *
+ * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+ * IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+ * FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+ * AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+ * LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+ * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
+ * SOFTWARE.
+ */
 package net.pl3x.map.claims.hook.claimchunk;
 
 import com.cjburkey.claimchunk.ClaimChunk;
@@ -14,6 +37,7 @@ import java.util.UUID;
 import java.util.stream.Collectors;
 import libs.org.checkerframework.checker.nullness.qual.NonNull;
 import net.pl3x.map.claims.hook.Hook;
+import net.pl3x.map.claims.util.ChunkMerge;
 import net.pl3x.map.core.markers.Point;
 import net.pl3x.map.core.markers.marker.Marker;
 import net.pl3x.map.core.markers.marker.Rectangle;
@@ -25,14 +49,14 @@ import org.bukkit.Bukkit;
 import org.bukkit.OfflinePlayer;
 import org.bukkit.event.Listener;
 
-public class CCHook implements Listener, Hook {
-    public CCHook() {
-        CCConfig.reload();
+public class ClaimChunkHook implements Listener, Hook {
+    public ClaimChunkHook() {
+        ClaimChunkConfig.reload();
     }
 
     @Override
     public void registerWorld(@NonNull World world) {
-        world.getLayerRegistry().register(new CCLayer(this, world));
+        world.getLayerRegistry().register(new ClaimChunkLayer(this, world));
     }
 
     @Override
@@ -59,7 +83,7 @@ public class CCHook implements Listener, Hook {
                 .filter(claim -> claim.chunk.getWorld().equals(world.getName()))
                 .toList();
 
-        if (CCConfig.SHOW_CHUNKS) {
+        if (ClaimChunkConfig.SHOW_CHUNKS) {
             return chunks.stream().map(claim -> {
                 int minX = claim.chunk.getX() << 4;
                 int maxX = (claim.chunk.getX() + 1) << 4;
@@ -71,67 +95,67 @@ public class CCHook implements Listener, Hook {
             }).collect(Collectors.toList());
         }
 
-        List<CCClaim> claims = chunks.stream().map(chunk ->
-                new CCClaim(chunk.chunk.getX(), chunk.chunk.getZ(), chunk.player)
+        List<ClaimChunkClaim> claims = chunks.stream().map(chunk ->
+                new ClaimChunkClaim(chunk.chunk.getX(), chunk.chunk.getZ(), chunk.player)
         ).collect(Collectors.toList());
-        List<CCGroup> groups = groupClaims(claims);
+        List<ClaimChunkGroup> groups = groupClaims(claims);
         Collection<Marker<?>> markers = new ArrayList<>();
-        for (CCGroup group : groups) {
+        for (ClaimChunkGroup group : groups) {
             String key = String.format("cc_%s_chunk_%s", world.getName(), group.id());
-            markers.add(RectangleMerge.getPoly(key, group.claims())
+            markers.add(ChunkMerge.getPoly(key, group.claims())
                     .setOptions(options(world, group.owner())));
         }
         return markers;
     }
 
-    private Options.Builder options(World world, UUID owner) {
+    private Options.@NonNull Builder options(@NonNull World world, @NonNull UUID owner) {
         OfflinePlayer player = Bukkit.getOfflinePlayer(owner);
         String ownerName = player.getName() == null ? "unknown" : player.getName();
         return Options.builder()
-                .strokeColor(Colors.fromHex(CCConfig.MARKER_STROKE_COLOR))
-                .strokeWeight(CCConfig.MARKER_STROKE_WEIGHT)
-                .fillColor(Colors.fromHex(CCConfig.MARKER_FILL_COLOR))
+                .strokeColor(Colors.fromHex(ClaimChunkConfig.MARKER_STROKE_COLOR))
+                .strokeWeight(ClaimChunkConfig.MARKER_STROKE_WEIGHT)
+                .fillColor(Colors.fromHex(ClaimChunkConfig.MARKER_FILL_COLOR))
                 .fillType(Fill.Type.NONZERO)
-                .popupContent(CCConfig.MARKER_POPUP
+                .popupContent(ClaimChunkConfig.MARKER_POPUP
                         .replace("<world>", world.getName())
                         .replace("<owner>", ownerName)
                 );
     }
 
-    private List<CCGroup> groupClaims(List<CCClaim> claims) {
+    private @NonNull List<@NonNull ClaimChunkGroup> groupClaims(@NonNull List<@NonNull ClaimChunkClaim> claims) {
         // break groups down by owner
-        Map<UUID, List<CCClaim>> byOwner = new HashMap<>();
-        for (CCClaim claim : claims) {
-            List<CCClaim> list = byOwner.getOrDefault(claim.owner(), new ArrayList<>());
+        Map<UUID, List<ClaimChunkClaim>> byOwner = new HashMap<>();
+        for (ClaimChunkClaim claim : claims) {
+            List<ClaimChunkClaim> list = byOwner.getOrDefault(claim.owner(), new ArrayList<>());
             list.add(claim);
             byOwner.put(claim.owner(), list);
         }
 
         // combine touching claims
-        Map<UUID, List<CCGroup>> groups = new HashMap<>();
-        for (Map.Entry<UUID, List<CCClaim>> entry : byOwner.entrySet()) {
+        Map<UUID, List<ClaimChunkGroup>> groups = new HashMap<>();
+        for (Map.Entry<UUID, List<ClaimChunkClaim>> entry : byOwner.entrySet()) {
             UUID owner = entry.getKey();
-            List<CCClaim> list = entry.getValue();
+            List<ClaimChunkClaim> list = entry.getValue();
             next1:
-            for (CCClaim claim : list) {
-                List<CCGroup> groupList = groups.getOrDefault(owner, new ArrayList<>());
-                for (CCGroup group : groupList) {
+            for (ClaimChunkClaim claim : list) {
+                List<ClaimChunkGroup> groupList = groups.getOrDefault(owner, new ArrayList<>());
+                for (ClaimChunkGroup group : groupList) {
                     if (group.isTouching(claim)) {
                         group.add(claim);
                         continue next1;
                     }
                 }
-                groupList.add(new CCGroup(claim, owner));
+                groupList.add(new ClaimChunkGroup(claim, owner));
                 groups.put(owner, groupList);
             }
         }
 
         // combined touching groups
-        List<CCGroup> combined = new ArrayList<>();
-        for (List<CCGroup> list : groups.values()) {
+        List<ClaimChunkGroup> combined = new ArrayList<>();
+        for (List<ClaimChunkGroup> list : groups.values()) {
             next:
-            for (CCGroup group : list) {
-                for (CCGroup toChk : combined) {
+            for (ClaimChunkGroup group : list) {
+                for (ClaimChunkGroup toChk : combined) {
                     if (toChk.isTouching(group)) {
                         toChk.add(group);
                         continue next;

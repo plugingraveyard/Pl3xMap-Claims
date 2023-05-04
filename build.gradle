@@ -21,6 +21,7 @@ java {
 repositories {
     maven { url = 'https://jitpack.io/' }
     maven { url = 'https://repo.papermc.io/repository/maven-public/' }
+    maven { url = 'https://oss.sonatype.org/content/repositories/snapshots' }
     maven { url = 'https://maven.enginehub.org/repo/' }
     exclusiveContent {
         forRepository { maven { url = 'https://api.modrinth.com/maven/' } }
@@ -33,9 +34,10 @@ dependencies {
         exclude group: 'org.yaml', module: 'snakeyaml'
     }
     compileOnly "maven.modrinth:pl3xmap:$pl3xmapVersion"
-    compileOnly "com.github.TechFortress:GriefPrevention:$gpVersion"
-    compileOnly "com.sk89q.worldguard:worldguard-bukkit:$wgVersion"
-    compileOnly "com.github.cjburkey01:ClaimChunk:$ccVersion"
+
+    compileOnly "com.github.cjburkey01:ClaimChunk:$claimchunkVersion"
+    compileOnly "com.github.TechFortress:GriefPrevention:$griefpreventionVersion"
+    compileOnly "com.sk89q.worldguard:worldguard-bukkit:$worldguardVersion"
 }
 
 compileJava {

@@ -21,17 +21,17 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
  * SOFTWARE.
  */
-package net.pl3x.map.claims.hook.worldguard;
+package net.pl3x.map.claims.hook.claimchunk;
 
 import java.nio.file.Path;
 import net.pl3x.map.claims.Pl3xMapClaims;
 import net.pl3x.map.core.configuration.AbstractConfig;
 
 @SuppressWarnings("CanBeFinal")
-public final class WGConfig extends AbstractConfig {
+public final class ClaimChunkConfig extends AbstractConfig {
     @Key("settings.layer.label")
     @Comment("Label for map layer")
-    public static String LAYER_LABEL = "WorldGuard";
+    public static String LAYER_LABEL = "ClaimChunk";
     @Key("settings.layer.show-controls")
     @Comment("Show controls for map layer")
     public static boolean LAYER_SHOW_CONTROLS = true;
@@ -48,6 +48,9 @@ public final class WGConfig extends AbstractConfig {
     @Comment("zIndex for map layer")
     public static int LAYER_ZINDEX = 10;
 
+    @Key("settings.claim.show-chunks")
+    @Comment("Show all the chunks in each claim.")
+    public static boolean SHOW_CHUNKS = true;
     @Key("settings.claim.stroke.color")
     @Comment("Stroke color (#AARRGGBB)")
     public static String MARKER_STROKE_COLOR = "#FF00FF00";
@@ -57,33 +60,15 @@ public final class WGConfig extends AbstractConfig {
     @Key("settings.claim.fill.color")
     @Comment("Fill color (#AARRGGBB)")
     public static String MARKER_FILL_COLOR = "#3300FF00";
-    @Key("settings.claim.popup.tooltip")
-    @Comment("Popup for claims")
+    @Key("settings.claim.popup")
+    @Comment("Popup for basic claims")
     public static String MARKER_POPUP = """
-            <span style="font-weight:bold;"><regionname></span><br/>
-            <owners><members><flags>""";
+            Claim Owner: <span style="font-weight:bold;"><owner></span>""";
 
-    @Key("settings.claim.popup.owners")
-    @Comment("Popup text for owners if present")
-    public static String MARKER_POPUP_OWNERS = """
-            Owners: <span style="font-weight:bold;"><owners></span><br/>""";
-    @Key("settings.claim.popup.members")
-    @Comment("Popup text for members if present")
-    public static String MARKER_POPUP_MEMBERS = """
-            Members: <span style="font-weight:bold;"><members></span><br/>""";
-    @Key("settings.claim.popup.flags")
-    @Comment("Popup text for flags if present")
-    public static String MARKER_POPUP_FLAGS = """
-            Flags:<br/><span style="display:inline-block;margin-left:10px"><flags></span><br/>""";
-    @Key("settings.claim.popup.flag-entry")
-    @Comment("How each flag entry should look")
-    public static String MARKER_POPUP_FLAGS_ENTRY = """
-            <span style="font-weight:bold;"><flag></span>: <value>""";
-
-    private static final WGConfig WG_CONFIG = new WGConfig();
+    private static final ClaimChunkConfig CONFIG = new ClaimChunkConfig();
 
     public static void reload() {
         Path mainDir = Pl3xMapClaims.getPlugin(Pl3xMapClaims.class).getDataFolder().toPath();
-        WG_CONFIG.reload(mainDir.resolve("worldguard.yml"), WGConfig.class);
+        CONFIG.reload(mainDir.resolve("claimchunk.yml"), ClaimChunkConfig.class);
     }
 }

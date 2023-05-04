@@ -30,9 +30,9 @@ import java.util.Map;
 import java.util.function.Supplier;
 import libs.org.checkerframework.checker.nullness.qual.NonNull;
 import libs.org.checkerframework.checker.nullness.qual.Nullable;
-import net.pl3x.map.claims.hook.claimchunk.CCHook;
-import net.pl3x.map.claims.hook.griefprevention.GPHook;
-import net.pl3x.map.claims.hook.worldguard.WGHook;
+import net.pl3x.map.claims.hook.claimchunk.ClaimChunkHook;
+import net.pl3x.map.claims.hook.griefprevention.GriefPreventionHook;
+import net.pl3x.map.claims.hook.worldguard.WorldGuardHook;
 import net.pl3x.map.core.markers.marker.Marker;
 import net.pl3x.map.core.world.World;
 
@@ -67,9 +67,9 @@ public interface Hook {
     @NonNull Collection<@NonNull Marker<@NonNull ?>> getClaims(@NonNull World world);
 
     enum Impl {
-        CLAIMCHUNK("ClaimChunk", CCHook::new),
-        GRIEF_PREVENTION("GriefPrevention", GPHook::new),
-        WORLD_GUARD("WorldGuard", WGHook::new);
+        CLAIMCHUNK("ClaimChunk", ClaimChunkHook::new),
+        GRIEFPREVENTION("GriefPrevention", GriefPreventionHook::new),
+        WORLDGUARD("WorldGuard", WorldGuardHook::new);
 
         private final String name;
         private final Supplier<@NonNull Hook> hook;
@@ -79,11 +79,11 @@ public interface Hook {
             this.hook = hook;
         }
 
-        public String getPluginName() {
+        public @NonNull String getPluginName() {
             return this.name;
         }
 
-        static final Map<@NonNull String, @NonNull Impl> MAP = new HashMap<>();
+        static final @NonNull Map<@NonNull String, @NonNull Impl> MAP = new HashMap<>();
 
         static {
             for (Impl impl : values()) {

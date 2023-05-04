@@ -25,7 +25,7 @@ package net.pl3x.map.claims.listener;
 
 import libs.org.checkerframework.checker.nullness.qual.NonNull;
 import net.pl3x.map.claims.hook.Hook;
-import net.pl3x.map.claims.hook.griefprevention.GPLayer;
+import net.pl3x.map.claims.hook.griefprevention.GriefPreventionLayer;
 import net.pl3x.map.core.Pl3xMap;
 import net.pl3x.map.core.event.EventHandler;
 import net.pl3x.map.core.event.EventListener;
@@ -43,12 +43,12 @@ public class Pl3xMapListener implements EventListener, Listener {
     }
 
     @org.bukkit.event.EventHandler
-    public void onPluginEnabled(PluginEnableEvent event) {
+    public void onPluginEnabled(@NonNull PluginEnableEvent event) {
         Hook.add(event.getPlugin().getName());
     }
 
     @org.bukkit.event.EventHandler
-    public void onPluginDisabled(PluginDisableEvent event) {
+    public void onPluginDisabled(@NonNull PluginDisableEvent event) {
         Hook.remove(event.getPlugin().getName());
     }
 
@@ -65,7 +65,7 @@ public class Pl3xMapListener implements EventListener, Listener {
     @EventHandler
     public void onWorldUnloaded(@NonNull WorldUnloadedEvent event) {
         try {
-            event.getWorld().getLayerRegistry().unregister(GPLayer.KEY);
+            event.getWorld().getLayerRegistry().unregister(GriefPreventionLayer.KEY);
         } catch (Throwable ignore) {
         }
     }

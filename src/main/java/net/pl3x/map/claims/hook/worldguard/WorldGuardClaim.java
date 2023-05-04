@@ -21,27 +21,34 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
  * SOFTWARE.
  */
-package net.pl3x.map.claims.hook.griefprevention;
+package net.pl3x.map.claims.hook.worldguard;
 
-import java.util.ArrayList;
+import com.sk89q.worldedit.math.BlockVector2;
+import com.sk89q.worldedit.math.BlockVector3;
+import com.sk89q.worldguard.domains.DefaultDomain;
+import com.sk89q.worldguard.protection.flags.Flag;
+import com.sk89q.worldguard.protection.regions.ProtectedRegion;
+import com.sk89q.worldguard.protection.regions.RegionType;
+import java.util.List;
+import java.util.Map;
+import javax.annotation.Nonnull;
 import libs.org.checkerframework.checker.nullness.qual.NonNull;
-import me.ryanhamshire.GriefPrevention.Claim;
+import libs.org.checkerframework.checker.nullness.qual.Nullable;
 import net.pl3x.map.core.markers.Point;
 import net.pl3x.map.core.world.World;
-import org.bukkit.Location;
 
-public class GPClaim {
+public class WorldGuardClaim {
     private final World world;
-    private final Claim claim;
+    private final ProtectedRegion region;
     private final Point min;
     private final Point max;
 
-    public GPClaim(@NonNull World world, @NonNull Claim claim) {
+    public WorldGuardClaim(@NonNull World world, @NonNull ProtectedRegion region) {
         this.world = world;
-        this.claim = claim;
+        this.region = region;
 
-        Location min = this.claim.getLesserBoundaryCorner();
-        Location max = this.claim.getGreaterBoundaryCorner();
+        BlockVector3 min = this.region.getMinimumPoint();
+        BlockVector3 max = this.region.getMaximumPoint();
         this.min = Point.of(min.getX(), min.getZ());
         this.max = Point.of(max.getX(), max.getZ());
     }
@@ -50,16 +57,16 @@ public class GPClaim {
         return this.world;
     }
 
-    public boolean isAdminClaim() {
-        return this.claim.isAdminClaim();
+    public @NonNull String getID() {
+        return this.region.getId();
     }
 
-    public @NonNull Long getID() {
-        return this.claim.getID();
+    public @NonNull DefaultDomain getOwners() {
+        return this.region.getOwners();
     }
 
-    public @NonNull String getOwnerName() {
-        return this.claim.getOwnerName();
+    public @NonNull DefaultDomain getMembers() {
+        return this.region.getMembers();
     }
 
     public @NonNull Point getMin() {
@@ -70,24 +77,23 @@ public class GPClaim {
         return this.max;
     }
 
-    public int getArea() {
-        return this.claim.getArea();
+    public @Nullable ProtectedRegion getParent() {
+        return this.region.getParent();
     }
 
-    public int getWidth() {
-        return this.claim.getWidth();
+    public int getPriority() {
+        return this.region.getPriority();
     }
 
-    public int getHeight() {
-        return this.claim.getHeight();
+    public @Nonnull Map<@NonNull Flag<@NonNull ?>, @NonNull Object> getFlags() {
+        return this.region.getFlags();
     }
 
-    public void getPermissions(
-            @NonNull ArrayList<@NonNull String> builders,
-            @NonNull ArrayList<@NonNull String> containers,
-            @NonNull ArrayList<@NonNull String> accessors,
-            @NonNull ArrayList<@NonNull String> managers
-    ) {
-        this.claim.getPermissions(builders, containers, accessors, managers);
+    public @NonNull List<@NonNull BlockVector2> getPoints() {
+        return this.region.getPoints();
+    }
+
+    public @NonNull RegionType getType() {
+        return this.region.getType();
     }
 }

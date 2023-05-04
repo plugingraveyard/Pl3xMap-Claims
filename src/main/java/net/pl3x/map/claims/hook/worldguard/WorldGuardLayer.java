@@ -21,34 +21,32 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
  * SOFTWARE.
  */
-package net.pl3x.map.claims;
+package net.pl3x.map.claims.hook.worldguard;
 
-import java.util.Arrays;
-import net.pl3x.map.claims.hook.Hook;
-import net.pl3x.map.claims.listener.Pl3xMapListener;
-import org.bukkit.plugin.java.JavaPlugin;
+import java.util.Collection;
+import libs.org.checkerframework.checker.nullness.qual.NonNull;
+import net.pl3x.map.core.markers.layer.WorldLayer;
+import net.pl3x.map.core.markers.marker.Marker;
+import net.pl3x.map.core.world.World;
 
-public final class Pl3xMapClaims extends JavaPlugin {
-    @Override
-    public void onEnable() {
-        if (!getServer().getPluginManager().isPluginEnabled("Pl3xMap")) {
-            getLogger().severe("Pl3xMap not found!");
-            getServer().getPluginManager().disablePlugin(this);
-            return;
-        }
+public class WorldGuardLayer extends WorldLayer {
+    public static final String KEY = "worldguard";
 
-        Arrays.stream(Hook.Impl.values()).forEach(impl -> {
-            if (getServer().getPluginManager().isPluginEnabled(impl.getPluginName())) {
-                getLogger().info("Hooking into " + impl.getPluginName());
-                Hook.add(impl);
-            }
-        });
+    private final WorldGuardHook worldGuardHook;
 
-        getServer().getPluginManager().registerEvents(new Pl3xMapListener(), this);
+    public WorldGuardLayer(@NonNull WorldGuardHook worldGuardHook, @NonNull World world) {
+        super(KEY, world, () -> WorldGuardConfig.LAYER_LABEL);
+        this.worldGuardHook = worldGuardHook;
+
+        setShowControls(WorldGuardConfig.LAYER_SHOW_CONTROLS);
+        setDefaultHidden(WorldGuardConfig.LAYER_DEFAULT_HIDDEN);
+        setUpdateInterval(WorldGuardConfig.LAYER_UPDATE_INTERVAL);
+        setPriority(WorldGuardConfig.LAYER_PRIORITY);
+        setZIndex(WorldGuardConfig.LAYER_ZINDEX);
     }
 
     @Override
-    public void onDisable() {
-        Hook.clear();
+    public @NonNull Collection<@NonNull Marker<@NonNull ?>> getMarkers() {
+        return this.worldGuardHook.getClaims(getWorld());
     }
 }

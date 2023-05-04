@@ -21,7 +21,7 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
  * SOFTWARE.
  */
-package net.pl3x.map.claims.hook.worldguard;
+package net.pl3x.map.claims.hook.claimchunk;
 
 import java.util.Collection;
 import libs.org.checkerframework.checker.nullness.qual.NonNull;
@@ -29,24 +29,24 @@ import net.pl3x.map.core.markers.layer.WorldLayer;
 import net.pl3x.map.core.markers.marker.Marker;
 import net.pl3x.map.core.world.World;
 
-public class WGLayer extends WorldLayer {
-    public static final String KEY = "worldguard";
+public class ClaimChunkLayer extends WorldLayer {
+    public static final String KEY = "claimchunk";
 
-    private final WGHook wgHook;
+    private final ClaimChunkHook claimChunkHook;
 
-    public WGLayer(@NonNull WGHook wgHook, @NonNull World world) {
-        super(KEY, world, () -> WGConfig.LAYER_LABEL);
-        this.wgHook = wgHook;
+    public ClaimChunkLayer(@NonNull ClaimChunkHook claimChunkHook, @NonNull World world) {
+        super(KEY, world, () -> ClaimChunkConfig.LAYER_LABEL);
+        this.claimChunkHook = claimChunkHook;
 
-        setShowControls(WGConfig.LAYER_SHOW_CONTROLS);
-        setDefaultHidden(WGConfig.LAYER_DEFAULT_HIDDEN);
-        setUpdateInterval(WGConfig.LAYER_UPDATE_INTERVAL);
-        setPriority(WGConfig.LAYER_PRIORITY);
-        setZIndex(WGConfig.LAYER_ZINDEX);
+        setShowControls(ClaimChunkConfig.LAYER_SHOW_CONTROLS);
+        setDefaultHidden(ClaimChunkConfig.LAYER_DEFAULT_HIDDEN);
+        setUpdateInterval(ClaimChunkConfig.LAYER_UPDATE_INTERVAL);
+        setPriority(ClaimChunkConfig.LAYER_PRIORITY);
+        setZIndex(ClaimChunkConfig.LAYER_ZINDEX);
     }
 
     @Override
     public @NonNull Collection<@NonNull Marker<@NonNull ?>> getMarkers() {
-        return this.wgHook.getClaims(getWorld());
+        return this.claimChunkHook.getClaims(getWorld());
     }
 }

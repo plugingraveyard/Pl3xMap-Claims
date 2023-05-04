@@ -21,34 +21,19 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
  * SOFTWARE.
  */
-package net.pl3x.map.claims;
+package net.pl3x.map.claims.hook.claimchunk;
 
-import java.util.Arrays;
-import net.pl3x.map.claims.hook.Hook;
-import net.pl3x.map.claims.listener.Pl3xMapListener;
-import org.bukkit.plugin.java.JavaPlugin;
+import java.util.UUID;
+import net.pl3x.map.claims.Chunk;
+import org.checkerframework.checker.nullness.qual.NonNull;
 
-public final class Pl3xMapClaims extends JavaPlugin {
-    @Override
-    public void onEnable() {
-        if (!getServer().getPluginManager().isPluginEnabled("Pl3xMap")) {
-            getLogger().severe("Pl3xMap not found!");
-            getServer().getPluginManager().disablePlugin(this);
-            return;
-        }
-
-        Arrays.stream(Hook.Impl.values()).forEach(impl -> {
-            if (getServer().getPluginManager().isPluginEnabled(impl.getPluginName())) {
-                getLogger().info("Hooking into " + impl.getPluginName());
-                Hook.add(impl);
-            }
-        });
-
-        getServer().getPluginManager().registerEvents(new Pl3xMapListener(), this);
-    }
-
-    @Override
-    public void onDisable() {
-        Hook.clear();
+public record ClaimChunkClaim(int x, int z, UUID owner) implements Chunk {
+    public boolean isTouching(@NonNull ClaimChunkClaim other) {
+        return owner().equals(other.owner()) && ( // same owner
+                (other.x() == x() && other.z() == z() - 1) || // touches north
+                (other.x() == x() && other.z() == z() + 1) || // touches south
+                (other.x() == x() - 1 && other.z() == z()) || // touches west
+                (other.x() == x() + 1 && other.z() == z()) // touches east
+        );
     }
 }

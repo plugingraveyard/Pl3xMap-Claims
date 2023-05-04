@@ -28,7 +28,7 @@ import net.pl3x.map.claims.Pl3xMapClaims;
 import net.pl3x.map.core.configuration.AbstractConfig;
 
 @SuppressWarnings("CanBeFinal")
-public final class GPConfig extends AbstractConfig {
+public final class GriefPreventionConfig extends AbstractConfig {
     @Key("settings.layer.label")
     @Comment("Label for map layer")
     public static String LAYER_LABEL = "GriefPrevention";
@@ -93,10 +93,10 @@ public final class GPConfig extends AbstractConfig {
     public static String MARKER_POPUP_PERMISSION = """
             Permission: <span style="font-weight:bold;"><managers></span><br/>""";
 
-    private static final GPConfig GP_CONFIG = new GPConfig();
+    private static final GriefPreventionConfig CONFIG = new GriefPreventionConfig();
 
     public static void reload() {
         Path mainDir = Pl3xMapClaims.getPlugin(Pl3xMapClaims.class).getDataFolder().toPath();
-        GP_CONFIG.reload(mainDir.resolve("griefprevention.yml"), GPConfig.class);
+        CONFIG.reload(mainDir.resolve("griefprevention.yml"), GriefPreventionConfig.class);
     }
 }
