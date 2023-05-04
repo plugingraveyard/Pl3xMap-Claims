@@ -13,8 +13,9 @@
 
 ## Supported claims plugins
 
-* GriefPrevention
-* WorldGuard
+* [ClaimChunk](https://www.spigotmc.org/resources/claimchunk.44458/)
+* [GriefPrevention](https://www.spigotmc.org/resources/griefprevention.1884/)
+* [WorldGuard](https://dev.bukkit.org/projects/worldguard)
 
 Don't see your claim plugin listed here? Let me know on Discord, and I'll see about adding it.
 
