@@ -56,6 +56,11 @@ public class GriefPreventionHook implements Listener, Hook {
     }
 
     @Override
+    public void unloadWorld(@NonNull World world) {
+        world.getLayerRegistry().unregister(GriefPreventionLayer.KEY);
+    }
+
+    @Override
     public @NonNull Collection<@NonNull Marker<@NonNull ?>> getClaims(@NonNull World world) {
         if (!isWorldEnabled(world.getName())) {
             return EMPTY_LIST;

@@ -60,6 +60,11 @@ public class ClaimChunkHook implements Listener, Hook {
     }
 
     @Override
+    public void unloadWorld(@NonNull World world) {
+        world.getLayerRegistry().unregister(ClaimChunkLayer.KEY);
+    }
+
+    @Override
     public @NonNull Collection<@NonNull Marker<@NonNull ?>> getClaims(@NonNull World world) {
         @SuppressWarnings("deprecation")
         ClaimChunk cc = ClaimChunk.getInstance();

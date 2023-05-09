@@ -62,6 +62,11 @@ public class WorldGuardHook implements Hook {
     }
 
     @Override
+    public void unloadWorld(@NonNull World world) {
+        world.getLayerRegistry().unregister(WorldGuardLayer.KEY);
+    }
+
+    @Override
     public @NonNull Collection<@NonNull Marker<@NonNull ?>> getClaims(@NonNull World world) {
         RegionManager manager = getRegionManager(world);
         if (manager == null) {

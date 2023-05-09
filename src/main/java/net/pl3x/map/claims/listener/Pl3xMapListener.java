@@ -25,7 +25,6 @@ package net.pl3x.map.claims.listener;
 
 import libs.org.checkerframework.checker.nullness.qual.NonNull;
 import net.pl3x.map.claims.hook.Hook;
-import net.pl3x.map.claims.hook.griefprevention.GriefPreventionLayer;
 import net.pl3x.map.core.Pl3xMap;
 import net.pl3x.map.core.event.EventHandler;
 import net.pl3x.map.core.event.EventListener;
@@ -65,7 +64,7 @@ public class Pl3xMapListener implements EventListener, Listener {
     @EventHandler
     public void onWorldUnloaded(@NonNull WorldUnloadedEvent event) {
         try {
-            event.getWorld().getLayerRegistry().unregister(GriefPreventionLayer.KEY);
+            Hook.hooks().forEach(hook -> hook.unloadWorld(event.getWorld()));
         } catch (Throwable ignore) {
         }
     }

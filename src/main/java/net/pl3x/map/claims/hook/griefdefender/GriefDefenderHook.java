@@ -45,6 +45,11 @@ public class GriefDefenderHook implements Listener, Hook {
     }
 
     @Override
+    public void unloadWorld(@NonNull World world) {
+        world.getLayerRegistry().unregister(GriefDefenderLayer.KEY);
+    }
+
+    @Override
     public @NonNull Collection<@NonNull Marker<@NonNull ?>> getClaims(@NonNull World world) {
         return GriefDefender.getCore().getAllClaims().stream()
                 .filter(claim -> claim.getWorldName().equals(world.getName()))

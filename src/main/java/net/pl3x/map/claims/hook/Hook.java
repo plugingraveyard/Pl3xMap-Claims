@@ -65,6 +65,8 @@ public interface Hook {
 
     void registerWorld(@NonNull World world);
 
+    void unloadWorld(World world);
+
     @NonNull Collection<@NonNull Marker<@NonNull ?>> getClaims(@NonNull World world);
 
     enum Impl {
