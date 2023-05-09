@@ -2,9 +2,9 @@
 
 # Pl3xMap-Claims
 
-[![Build Status](https://img.shields.io/github/actions/workflow/status/BillyGalbreath/Pl3xMap/build.yml?event=push&logo=travis)](https://github.com/BillyGalbreath/Pl3xMap/actions)
+[![Build Status](https://img.shields.io/github/actions/workflow/status/BillyGalbreath/Pl3xMap-Claims/build.yml?event=push&logo=travis)](https://github.com/BillyGalbreath/Pl3xMap-Claims/actions)
 [![Join us on Discord](https://img.shields.io/discord/944144133054931025.svg?label=&logo=discord&logoColor=ffffff&color=7389D8&labelColor=6A7EC2)](https://discord.gg/nhGzEkwXQX)
-[![MIT License](https://img.shields.io/github/license/BillyGalbreath/Pl3xMap?&logo=github)](LICENSE)
+[![MIT License](https://img.shields.io/github/license/BillyGalbreath/Pl3xMap-Claims?&logo=github)](LICENSE)
 <br>
 
 <big>***A Pl3xMap addon to add various claims to your maps.***</big>
