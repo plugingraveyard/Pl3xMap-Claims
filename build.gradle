@@ -23,6 +23,7 @@ repositories {
     maven { url = 'https://repo.papermc.io/repository/maven-public/' }
     maven { url = 'https://oss.sonatype.org/content/repositories/snapshots' }
     maven { url = 'https://maven.enginehub.org/repo/' }
+    maven { url = 'https://repo.glaremasters.me/repository/bloodshot' }
     exclusiveContent {
         forRepository { maven { url = 'https://api.modrinth.com/maven/' } }
         filter { includeGroup 'maven.modrinth' }
@@ -36,6 +37,7 @@ dependencies {
     compileOnly "maven.modrinth:pl3xmap:$pl3xmapVersion"
 
     compileOnly "com.github.cjburkey01:ClaimChunk:$claimchunkVersion"
+    compileOnly "com.griefdefender:api:$griefdefenderVersion"
     compileOnly "com.github.TechFortress:GriefPrevention:$griefpreventionVersion"
     compileOnly "com.sk89q.worldguard:worldguard-bukkit:$worldguardVersion"
 }

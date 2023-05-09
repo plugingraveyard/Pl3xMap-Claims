@@ -31,6 +31,7 @@ import java.util.function.Supplier;
 import libs.org.checkerframework.checker.nullness.qual.NonNull;
 import libs.org.checkerframework.checker.nullness.qual.Nullable;
 import net.pl3x.map.claims.hook.claimchunk.ClaimChunkHook;
+import net.pl3x.map.claims.hook.griefdefender.GriefDefenderHook;
 import net.pl3x.map.claims.hook.griefprevention.GriefPreventionHook;
 import net.pl3x.map.claims.hook.worldguard.WorldGuardHook;
 import net.pl3x.map.core.markers.marker.Marker;
@@ -68,6 +69,7 @@ public interface Hook {
 
     enum Impl {
         CLAIMCHUNK("ClaimChunk", ClaimChunkHook::new),
+        GRIEFDEFENDER("GriefDefender", GriefDefenderHook::new),
         GRIEFPREVENTION("GriefPrevention", GriefPreventionHook::new),
         WORLDGUARD("WorldGuard", WorldGuardHook::new);
 
