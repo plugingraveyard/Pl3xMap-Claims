@@ -9,5 +9,6 @@ website: "${website}"
 softdepend:
   - Pl3xMap
   - ClaimChunk
+  - GriefDefender
   - GriefPrevention
   - WorldGuard
