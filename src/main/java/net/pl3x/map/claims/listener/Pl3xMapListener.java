@@ -23,7 +23,6 @@
  */
 package net.pl3x.map.claims.listener;
 
-import libs.org.checkerframework.checker.nullness.qual.NonNull;
 import net.pl3x.map.claims.hook.Hook;
 import net.pl3x.map.core.Pl3xMap;
 import net.pl3x.map.core.event.EventHandler;
@@ -35,6 +34,7 @@ import net.pl3x.map.core.world.World;
 import org.bukkit.event.Listener;
 import org.bukkit.event.server.PluginDisableEvent;
 import org.bukkit.event.server.PluginEnableEvent;
+import org.jetbrains.annotations.NotNull;
 
 public class Pl3xMapListener implements EventListener, Listener {
     public Pl3xMapListener() {
@@ -42,34 +42,34 @@ public class Pl3xMapListener implements EventListener, Listener {
     }
 
     @org.bukkit.event.EventHandler
-    public void onPluginEnabled(@NonNull PluginEnableEvent event) {
+    public void onPluginEnabled(@NotNull PluginEnableEvent event) {
         Hook.add(event.getPlugin().getName());
     }
 
     @org.bukkit.event.EventHandler
-    public void onPluginDisabled(@NonNull PluginDisableEvent event) {
+    public void onPluginDisabled(@NotNull PluginDisableEvent event) {
         Hook.remove(event.getPlugin().getName());
     }
 
     @EventHandler
-    public void onServerLoaded(@NonNull ServerLoadedEvent event) {
+    public void onServerLoaded(@NotNull ServerLoadedEvent event) {
         Pl3xMap.api().getWorldRegistry().forEach(this::registerWorld);
     }
 
     @EventHandler
-    public void onWorldLoaded(@NonNull WorldLoadedEvent event) {
+    public void onWorldLoaded(@NotNull WorldLoadedEvent event) {
         registerWorld(event.getWorld());
     }
 
     @EventHandler
-    public void onWorldUnloaded(@NonNull WorldUnloadedEvent event) {
+    public void onWorldUnloaded(@NotNull WorldUnloadedEvent event) {
         try {
             Hook.hooks().forEach(hook -> hook.unloadWorld(event.getWorld()));
         } catch (Throwable ignore) {
         }
     }
 
-    private void registerWorld(@NonNull World world) {
+    private void registerWorld(@NotNull World world) {
         Hook.hooks().forEach(hook -> hook.registerWorld(world));
     }
 }

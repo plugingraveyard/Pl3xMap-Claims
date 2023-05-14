@@ -25,10 +25,10 @@ package net.pl3x.map.claims.hook.claimchunk;
 
 import java.util.UUID;
 import net.pl3x.map.claims.Chunk;
-import org.checkerframework.checker.nullness.qual.NonNull;
+import org.jetbrains.annotations.NotNull;
 
-public record ClaimChunkClaim(int x, int z, UUID owner) implements Chunk {
-    public boolean isTouching(@NonNull ClaimChunkClaim other) {
+public record ClaimChunkClaim(int x, int z, @NotNull UUID owner) implements Chunk {
+    public boolean isTouching(@NotNull ClaimChunkClaim other) {
         return owner().equals(other.owner()) && ( // same owner
                 (other.x() == x() && other.z() == z() - 1) || // touches north
                 (other.x() == x() && other.z() == z() + 1) || // touches south

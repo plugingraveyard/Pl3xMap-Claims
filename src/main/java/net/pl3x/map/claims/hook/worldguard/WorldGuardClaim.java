@@ -31,11 +31,10 @@ import com.sk89q.worldguard.protection.regions.ProtectedRegion;
 import com.sk89q.worldguard.protection.regions.RegionType;
 import java.util.List;
 import java.util.Map;
-import javax.annotation.Nonnull;
-import libs.org.checkerframework.checker.nullness.qual.NonNull;
-import libs.org.checkerframework.checker.nullness.qual.Nullable;
 import net.pl3x.map.core.markers.Point;
 import net.pl3x.map.core.world.World;
+import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
 
 public class WorldGuardClaim {
     private final World world;
@@ -43,7 +42,7 @@ public class WorldGuardClaim {
     private final Point min;
     private final Point max;
 
-    public WorldGuardClaim(@NonNull World world, @NonNull ProtectedRegion region) {
+    public WorldGuardClaim(@NotNull World world, @NotNull ProtectedRegion region) {
         this.world = world;
         this.region = region;
 
@@ -53,27 +52,27 @@ public class WorldGuardClaim {
         this.max = Point.of(max.getX(), max.getZ());
     }
 
-    public @NonNull World getWorld() {
+    public @NotNull World getWorld() {
         return this.world;
     }
 
-    public @NonNull String getID() {
+    public @NotNull String getID() {
         return this.region.getId();
     }
 
-    public @NonNull DefaultDomain getOwners() {
+    public @NotNull DefaultDomain getOwners() {
         return this.region.getOwners();
     }
 
-    public @NonNull DefaultDomain getMembers() {
+    public @NotNull DefaultDomain getMembers() {
         return this.region.getMembers();
     }
 
-    public @NonNull Point getMin() {
+    public @NotNull Point getMin() {
         return this.min;
     }
 
-    public @NonNull Point getMax() {
+    public @NotNull Point getMax() {
         return this.max;
     }
 
@@ -85,15 +84,15 @@ public class WorldGuardClaim {
         return this.region.getPriority();
     }
 
-    public @Nonnull Map<@NonNull Flag<@NonNull ?>, @NonNull Object> getFlags() {
+    public @NotNull Map<Flag<?>, Object> getFlags() {
         return this.region.getFlags();
     }
 
-    public @NonNull List<@NonNull BlockVector2> getPoints() {
+    public @NotNull List<BlockVector2> getPoints() {
         return this.region.getPoints();
     }
 
-    public @NonNull RegionType getType() {
+    public @NotNull RegionType getType() {
         return this.region.getType();
     }
 }

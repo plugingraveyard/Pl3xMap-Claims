@@ -24,17 +24,17 @@
 package net.pl3x.map.claims.hook.claimchunk;
 
 import java.util.Collection;
-import libs.org.checkerframework.checker.nullness.qual.NonNull;
 import net.pl3x.map.core.markers.layer.WorldLayer;
 import net.pl3x.map.core.markers.marker.Marker;
 import net.pl3x.map.core.world.World;
+import org.jetbrains.annotations.NotNull;
 
 public class ClaimChunkLayer extends WorldLayer {
     public static final String KEY = "claimchunk";
 
     private final ClaimChunkHook claimChunkHook;
 
-    public ClaimChunkLayer(@NonNull ClaimChunkHook claimChunkHook, @NonNull World world) {
+    public ClaimChunkLayer(@NotNull ClaimChunkHook claimChunkHook, @NotNull World world) {
         super(KEY, world, () -> ClaimChunkConfig.LAYER_LABEL);
         this.claimChunkHook = claimChunkHook;
 
@@ -46,7 +46,7 @@ public class ClaimChunkLayer extends WorldLayer {
     }
 
     @Override
-    public @NonNull Collection<@NonNull Marker<@NonNull ?>> getMarkers() {
+    public @NotNull Collection<Marker<?>> getMarkers() {
         return this.claimChunkHook.getClaims(getWorld());
     }
 }

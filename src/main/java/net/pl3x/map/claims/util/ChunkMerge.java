@@ -34,12 +34,12 @@ import net.pl3x.map.core.markers.Point;
 import net.pl3x.map.core.markers.marker.Marker;
 import net.pl3x.map.core.markers.marker.Polygon;
 import net.pl3x.map.core.markers.marker.Polyline;
-import org.checkerframework.checker.nullness.qual.NonNull;
+import org.jetbrains.annotations.NotNull;
 
 // https://stackoverflow.com/a/56326866
 
 public class ChunkMerge {
-    public static @NonNull Polygon getPoly(@NonNull String key, @NonNull List<? extends @NonNull Chunk> chunks) {
+    public static @NotNull Polygon getPoly(@NotNull String key, @NotNull List<? extends Chunk> chunks) {
         Area area = new Area();
         for (Chunk chunk : chunks) {
             int x = chunk.x() << 4;
@@ -55,7 +55,7 @@ public class ChunkMerge {
         return Marker.polygon(key, toLines(key, area));
     }
 
-    private static @NonNull List<@NonNull Polyline> toLines(@NonNull String key, @NonNull Shape shape) {
+    private static @NotNull List<Polyline> toLines(@NotNull String key, @NotNull Shape shape) {
         List<Polyline> lines = new ArrayList<>();
         Polyline line = new Polyline(key, Point.ZERO);
         double[] coords = new double[6];

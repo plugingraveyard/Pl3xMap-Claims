@@ -24,17 +24,17 @@
 package net.pl3x.map.claims.hook.griefprevention;
 
 import java.util.Collection;
-import libs.org.checkerframework.checker.nullness.qual.NonNull;
 import net.pl3x.map.core.markers.layer.WorldLayer;
 import net.pl3x.map.core.markers.marker.Marker;
 import net.pl3x.map.core.world.World;
+import org.jetbrains.annotations.NotNull;
 
 public class GriefPreventionLayer extends WorldLayer {
     public static final String KEY = "griefprevention";
 
     private final GriefPreventionHook griefPreventionHook;
 
-    public GriefPreventionLayer(@NonNull GriefPreventionHook griefPreventionHook, @NonNull World world) {
+    public GriefPreventionLayer(@NotNull GriefPreventionHook griefPreventionHook, @NotNull World world) {
         super(KEY, world, () -> GriefPreventionConfig.LAYER_LABEL);
         this.griefPreventionHook = griefPreventionHook;
 
@@ -46,7 +46,7 @@ public class GriefPreventionLayer extends WorldLayer {
     }
 
     @Override
-    public @NonNull Collection<@NonNull Marker<@NonNull ?>> getMarkers() {
+    public @NotNull Collection<Marker<?>> getMarkers() {
         return this.griefPreventionHook.getClaims(getWorld());
     }
 }

@@ -33,7 +33,6 @@ import java.util.HashSet;
 import java.util.Map;
 import java.util.Set;
 import java.util.stream.Collectors;
-import libs.org.checkerframework.checker.nullness.qual.NonNull;
 import net.pl3x.map.claims.hook.Hook;
 import net.pl3x.map.core.markers.Point;
 import net.pl3x.map.core.markers.marker.Marker;
@@ -41,33 +40,34 @@ import net.pl3x.map.core.markers.option.Options;
 import net.pl3x.map.core.util.Colors;
 import net.pl3x.map.core.world.World;
 import org.bukkit.Bukkit;
-import org.checkerframework.checker.nullness.qual.Nullable;
+import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
 
 public class WorldGuardHook implements Hook {
     public WorldGuardHook() {
         WorldGuardConfig.reload();
     }
 
-    private @Nullable RegionManager getRegionManager(@NonNull World world) {
+    private @Nullable RegionManager getRegionManager(@NotNull World world) {
         org.bukkit.World bukkit = Bukkit.getWorld(world.getName());
         return bukkit == null ? null : WorldGuard.getInstance().getPlatform()
                 .getRegionContainer().get(BukkitAdapter.adapt(bukkit));
     }
 
     @Override
-    public void registerWorld(@NonNull World world) {
+    public void registerWorld(@NotNull World world) {
         if (getRegionManager(world) != null) {
             world.getLayerRegistry().register(new WorldGuardLayer(this, world));
         }
     }
 
     @Override
-    public void unloadWorld(@NonNull World world) {
+    public void unloadWorld(@NotNull World world) {
         world.getLayerRegistry().unregister(WorldGuardLayer.KEY);
     }
 
     @Override
-    public @NonNull Collection<@NonNull Marker<@NonNull ?>> getClaims(@NonNull World world) {
+    public @NotNull Collection<Marker<?>> getClaims(@NotNull World world) {
         RegionManager manager = getRegionManager(world);
         if (manager == null) {
             return EMPTY_LIST;
@@ -90,7 +90,7 @@ public class WorldGuardHook implements Hook {
                 .collect(Collectors.toSet());
     }
 
-    private @NonNull Options getOptions(@NonNull WorldGuardClaim claim) {
+    private @NotNull Options getOptions(@NotNull WorldGuardClaim claim) {
         return Options.builder()
                 .strokeWeight(WorldGuardConfig.MARKER_STROKE_WEIGHT)
                 .strokeColor(Colors.fromHex(WorldGuardConfig.MARKER_STROKE_COLOR))
@@ -99,7 +99,7 @@ public class WorldGuardHook implements Hook {
                 .build();
     }
 
-    private @NonNull String processPopup(@NonNull String popup, @NonNull WorldGuardClaim claim) {
+    private @NotNull String processPopup(@NotNull String popup, @NotNull WorldGuardClaim claim) {
         return popup.replace("<world>", claim.getWorld().getName())
                 .replace("<regionname>", claim.getID())
                 .replace("<owners>", getOwners(claim))
@@ -109,7 +109,7 @@ public class WorldGuardHook implements Hook {
                 .replace("<flags>", getFlags(claim));
     }
 
-    private @NonNull String getOwners(@NonNull WorldGuardClaim claim) {
+    private @NotNull String getOwners(@NotNull WorldGuardClaim claim) {
         Set<String> set = new HashSet<>();
         set.addAll(claim.getOwners().getPlayers());
         set.addAll(claim.getOwners().getGroups());
@@ -117,7 +117,7 @@ public class WorldGuardHook implements Hook {
                 .replace("<owners>", String.join(", ", set));
     }
 
-    private @NonNull String getMembers(@NonNull WorldGuardClaim claim) {
+    private @NotNull String getMembers(@NotNull WorldGuardClaim claim) {
         Set<String> set = new HashSet<>();
         set.addAll(claim.getMembers().getPlayers());
         set.addAll(claim.getMembers().getGroups());
@@ -125,7 +125,7 @@ public class WorldGuardHook implements Hook {
                 .replace("<members>", String.join(", ", set));
     }
 
-    private @NonNull String getFlags(@NonNull WorldGuardClaim claim) {
+    private @NotNull String getFlags(@NotNull WorldGuardClaim claim) {
         Map<Flag<?>, Object> flags = claim.getFlags();
         Set<String> set = flags.keySet().stream()
                 .map(flag -> WorldGuardConfig.MARKER_POPUP_FLAGS_ENTRY

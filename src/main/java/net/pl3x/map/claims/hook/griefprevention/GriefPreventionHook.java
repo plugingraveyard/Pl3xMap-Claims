@@ -28,7 +28,6 @@ import java.util.Collection;
 import java.util.List;
 import java.util.UUID;
 import java.util.stream.Collectors;
-import libs.org.checkerframework.checker.nullness.qual.NonNull;
 import me.ryanhamshire.GriefPrevention.GriefPrevention;
 import net.pl3x.map.claims.hook.Hook;
 import net.pl3x.map.core.markers.marker.Marker;
@@ -38,30 +37,31 @@ import net.pl3x.map.core.world.World;
 import org.bukkit.Bukkit;
 import org.bukkit.OfflinePlayer;
 import org.bukkit.event.Listener;
+import org.jetbrains.annotations.NotNull;
 
 public class GriefPreventionHook implements Listener, Hook {
     public GriefPreventionHook() {
         GriefPreventionConfig.reload();
     }
 
-    private boolean isWorldEnabled(@NonNull String name) {
+    private boolean isWorldEnabled(@NotNull String name) {
         return GriefPrevention.instance.claimsEnabledForWorld(Bukkit.getWorld(name));
     }
 
     @Override
-    public void registerWorld(@NonNull World world) {
+    public void registerWorld(@NotNull World world) {
         if (isWorldEnabled(world.getName())) {
             world.getLayerRegistry().register(new GriefPreventionLayer(this, world));
         }
     }
 
     @Override
-    public void unloadWorld(@NonNull World world) {
+    public void unloadWorld(@NotNull World world) {
         world.getLayerRegistry().unregister(GriefPreventionLayer.KEY);
     }
 
     @Override
-    public @NonNull Collection<@NonNull Marker<@NonNull ?>> getClaims(@NonNull World world) {
+    public @NotNull Collection<Marker<?>> getClaims(@NotNull World world) {
         if (!isWorldEnabled(world.getName())) {
             return EMPTY_LIST;
         }
@@ -76,7 +76,7 @@ public class GriefPreventionHook implements Listener, Hook {
                 .collect(Collectors.toSet());
     }
 
-    private @NonNull Options getOptions(@NonNull GriefPreventionClaim claim) {
+    private @NotNull Options getOptions(@NotNull GriefPreventionClaim claim) {
         Options.Builder builder;
         if (claim.isAdminClaim()) {
             builder = Options.builder()
@@ -94,7 +94,7 @@ public class GriefPreventionHook implements Listener, Hook {
         return builder.build();
     }
 
-    private @NonNull String processPopup(@NonNull String popup, @NonNull GriefPreventionClaim claim) {
+    private @NotNull String processPopup(@NotNull String popup, @NotNull GriefPreventionClaim claim) {
         return popup.replace("<world>", claim.getWorld().getName())
                 .replace("<id>", Long.toString(claim.getID()))
                 .replace("<owner>", claim.getOwnerName())
@@ -104,7 +104,7 @@ public class GriefPreventionHook implements Listener, Hook {
                 .replace("<height>", Integer.toString(claim.getHeight()));
     }
 
-    private @NonNull String getTrusts(@NonNull GriefPreventionClaim claim) {
+    private @NotNull String getTrusts(@NotNull GriefPreventionClaim claim) {
         ArrayList<String> builders = new ArrayList<>();
         ArrayList<String> containers = new ArrayList<>();
         ArrayList<String> accessors = new ArrayList<>();
@@ -130,7 +130,7 @@ public class GriefPreventionHook implements Listener, Hook {
         return sb.toString();
     }
 
-    private @NonNull String getNames(@NonNull List<@NonNull String> list) {
+    private @NotNull String getNames(@NotNull List<String> list) {
         List<String> names = new ArrayList<>();
         for (String str : list) {
             try {

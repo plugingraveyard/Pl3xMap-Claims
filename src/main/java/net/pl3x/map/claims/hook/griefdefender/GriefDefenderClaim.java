@@ -26,9 +26,9 @@ package net.pl3x.map.claims.hook.griefdefender;
 import com.griefdefender.api.claim.Claim;
 import com.griefdefender.lib.flowpowered.math.vector.Vector3i;
 import java.util.UUID;
-import libs.org.checkerframework.checker.nullness.qual.NonNull;
 import net.pl3x.map.core.markers.Point;
 import net.pl3x.map.core.world.World;
+import org.jetbrains.annotations.NotNull;
 
 public class GriefDefenderClaim {
     private final World world;
@@ -36,7 +36,7 @@ public class GriefDefenderClaim {
     private final Point min;
     private final Point max;
 
-    public GriefDefenderClaim(@NonNull World world, @NonNull Claim claim) {
+    public GriefDefenderClaim(@NotNull World world, @NotNull Claim claim) {
         this.world = world;
         this.claim = claim;
 
@@ -46,7 +46,7 @@ public class GriefDefenderClaim {
         this.max = Point.of(max.getX(), max.getZ());
     }
 
-    public @NonNull World getWorld() {
+    public @NotNull World getWorld() {
         return this.world;
     }
 
@@ -54,19 +54,19 @@ public class GriefDefenderClaim {
         return this.claim.isAdminClaim();
     }
 
-    public @NonNull UUID getID() {
+    public @NotNull UUID getID() {
         return this.claim.getUniqueId();
     }
 
-    public @NonNull String getOwnerName() {
+    public @NotNull String getOwnerName() {
         return this.claim.getOwnerName();
     }
 
-    public @NonNull Point getMin() {
+    public @NotNull Point getMin() {
         return this.min;
     }
 
-    public @NonNull Point getMax() {
+    public @NotNull Point getMax() {
         return this.max;
     }
 

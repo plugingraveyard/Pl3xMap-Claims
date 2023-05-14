@@ -26,18 +26,18 @@ package net.pl3x.map.claims.hook.claimchunk;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
-import org.checkerframework.checker.nullness.qual.NonNull;
+import org.jetbrains.annotations.NotNull;
 
 public class ClaimChunkGroup {
-    private final List<@NonNull ClaimChunkClaim> claims = new ArrayList<>();
+    private final List<ClaimChunkClaim> claims = new ArrayList<>();
     private final UUID owner;
 
-    public ClaimChunkGroup(@NonNull ClaimChunkClaim claim, @NonNull UUID owner) {
+    public ClaimChunkGroup(@NotNull ClaimChunkClaim claim, @NotNull UUID owner) {
         add(claim);
         this.owner = owner;
     }
 
-    public boolean isTouching(@NonNull ClaimChunkClaim claim) {
+    public boolean isTouching(@NotNull ClaimChunkClaim claim) {
         for (ClaimChunkClaim toChk : claims) {
             if (toChk.isTouching(claim)) {
                 return true;
@@ -46,7 +46,7 @@ public class ClaimChunkGroup {
         return false;
     }
 
-    public boolean isTouching(@NonNull ClaimChunkGroup group) {
+    public boolean isTouching(@NotNull ClaimChunkGroup group) {
         for (ClaimChunkClaim claim : group.claims()) {
             if (isTouching(claim)) {
                 return true;
@@ -55,23 +55,23 @@ public class ClaimChunkGroup {
         return false;
     }
 
-    public void add(@NonNull ClaimChunkClaim claim) {
+    public void add(@NotNull ClaimChunkClaim claim) {
         claims.add(claim);
     }
 
-    public void add(@NonNull ClaimChunkGroup group) {
+    public void add(@NotNull ClaimChunkGroup group) {
         claims.addAll(group.claims());
     }
 
-    public @NonNull List<@NonNull ClaimChunkClaim> claims() {
+    public @NotNull List<ClaimChunkClaim> claims() {
         return claims;
     }
 
-    public @NonNull UUID owner() {
+    public @NotNull UUID owner() {
         return owner;
     }
 
-    public @NonNull String id() {
+    public @NotNull String id() {
         if (claims.size() > 0) {
             ClaimChunkClaim claim = claims.get(0);
             return claim.x() + "_" + claim.z();

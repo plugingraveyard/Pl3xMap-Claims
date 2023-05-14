@@ -24,11 +24,11 @@
 package net.pl3x.map.claims.hook.griefprevention;
 
 import java.util.ArrayList;
-import libs.org.checkerframework.checker.nullness.qual.NonNull;
 import me.ryanhamshire.GriefPrevention.Claim;
 import net.pl3x.map.core.markers.Point;
 import net.pl3x.map.core.world.World;
 import org.bukkit.Location;
+import org.jetbrains.annotations.NotNull;
 
 public class GriefPreventionClaim {
     private final World world;
@@ -36,7 +36,7 @@ public class GriefPreventionClaim {
     private final Point min;
     private final Point max;
 
-    public GriefPreventionClaim(@NonNull World world, @NonNull Claim claim) {
+    public GriefPreventionClaim(@NotNull World world, @NotNull Claim claim) {
         this.world = world;
         this.claim = claim;
 
@@ -46,7 +46,7 @@ public class GriefPreventionClaim {
         this.max = Point.of(max.getX(), max.getZ());
     }
 
-    public @NonNull World getWorld() {
+    public @NotNull World getWorld() {
         return this.world;
     }
 
@@ -54,19 +54,19 @@ public class GriefPreventionClaim {
         return this.claim.isAdminClaim();
     }
 
-    public @NonNull Long getID() {
+    public @NotNull Long getID() {
         return this.claim.getID();
     }
 
-    public @NonNull String getOwnerName() {
+    public @NotNull String getOwnerName() {
         return this.claim.getOwnerName();
     }
 
-    public @NonNull Point getMin() {
+    public @NotNull Point getMin() {
         return this.min;
     }
 
-    public @NonNull Point getMax() {
+    public @NotNull Point getMax() {
         return this.max;
     }
 
@@ -83,10 +83,10 @@ public class GriefPreventionClaim {
     }
 
     public void getPermissions(
-            @NonNull ArrayList<@NonNull String> builders,
-            @NonNull ArrayList<@NonNull String> containers,
-            @NonNull ArrayList<@NonNull String> accessors,
-            @NonNull ArrayList<@NonNull String> managers
+            @NotNull ArrayList<String> builders,
+            @NotNull ArrayList<String> containers,
+            @NotNull ArrayList<String> accessors,
+            @NotNull ArrayList<String> managers
     ) {
         this.claim.getPermissions(builders, containers, accessors, managers);
     }

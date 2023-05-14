@@ -26,13 +26,13 @@ package net.pl3x.map.claims.hook.griefdefender;
 import com.griefdefender.api.GriefDefender;
 import java.util.Collection;
 import java.util.stream.Collectors;
-import libs.org.checkerframework.checker.nullness.qual.NonNull;
 import net.pl3x.map.claims.hook.Hook;
 import net.pl3x.map.core.markers.marker.Marker;
 import net.pl3x.map.core.markers.option.Options;
 import net.pl3x.map.core.util.Colors;
 import net.pl3x.map.core.world.World;
 import org.bukkit.event.Listener;
+import org.jetbrains.annotations.NotNull;
 
 public class GriefDefenderHook implements Listener, Hook {
     public GriefDefenderHook() {
@@ -40,17 +40,17 @@ public class GriefDefenderHook implements Listener, Hook {
     }
 
     @Override
-    public void registerWorld(@NonNull World world) {
+    public void registerWorld(@NotNull World world) {
         world.getLayerRegistry().register(new GriefDefenderLayer(this, world));
     }
 
     @Override
-    public void unloadWorld(@NonNull World world) {
+    public void unloadWorld(@NotNull World world) {
         world.getLayerRegistry().unregister(GriefDefenderLayer.KEY);
     }
 
     @Override
-    public @NonNull Collection<@NonNull Marker<@NonNull ?>> getClaims(@NonNull World world) {
+    public @NotNull Collection<Marker<?>> getClaims(@NotNull World world) {
         return GriefDefender.getCore().getAllClaims().stream()
                 .filter(claim -> claim.getWorldName().equals(world.getName()))
                 .map(claim -> new GriefDefenderClaim(world, claim))
@@ -62,7 +62,7 @@ public class GriefDefenderHook implements Listener, Hook {
                 .collect(Collectors.toSet());
     }
 
-    private @NonNull Options getOptions(@NonNull GriefDefenderClaim claim) {
+    private @NotNull Options getOptions(@NotNull GriefDefenderClaim claim) {
         Options.Builder builder;
         if (claim.isAdminClaim()) {
             builder = Options.builder()
@@ -80,7 +80,7 @@ public class GriefDefenderHook implements Listener, Hook {
         return builder.build();
     }
 
-    private @NonNull String processPopup(@NonNull String popup, @NonNull GriefDefenderClaim claim) {
+    private @NotNull String processPopup(@NotNull String popup, @NotNull GriefDefenderClaim claim) {
         return popup.replace("<world>", claim.getWorld().getName())
                 .replace("<id>", claim.getID().toString())
                 .replace("<owner>", claim.getOwnerName())

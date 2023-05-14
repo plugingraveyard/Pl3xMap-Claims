@@ -35,7 +35,6 @@ import java.util.List;
 import java.util.Map;
 import java.util.UUID;
 import java.util.stream.Collectors;
-import libs.org.checkerframework.checker.nullness.qual.NonNull;
 import net.pl3x.map.claims.hook.Hook;
 import net.pl3x.map.claims.util.ChunkMerge;
 import net.pl3x.map.core.markers.Point;
@@ -48,6 +47,7 @@ import net.pl3x.map.core.world.World;
 import org.bukkit.Bukkit;
 import org.bukkit.OfflinePlayer;
 import org.bukkit.event.Listener;
+import org.jetbrains.annotations.NotNull;
 
 public class ClaimChunkHook implements Listener, Hook {
     public ClaimChunkHook() {
@@ -55,17 +55,17 @@ public class ClaimChunkHook implements Listener, Hook {
     }
 
     @Override
-    public void registerWorld(@NonNull World world) {
+    public void registerWorld(@NotNull World world) {
         world.getLayerRegistry().register(new ClaimChunkLayer(this, world));
     }
 
     @Override
-    public void unloadWorld(@NonNull World world) {
+    public void unloadWorld(@NotNull World world) {
         world.getLayerRegistry().unregister(ClaimChunkLayer.KEY);
     }
 
     @Override
-    public @NonNull Collection<@NonNull Marker<@NonNull ?>> getClaims(@NonNull World world) {
+    public @NotNull Collection<Marker<?>> getClaims(@NotNull World world) {
         @SuppressWarnings("deprecation")
         ClaimChunk cc = ClaimChunk.getInstance();
 
@@ -76,7 +76,7 @@ public class ClaimChunkHook implements Listener, Hook {
             dataHandler = (IClaimChunkDataHandler) field.get(cc);
         } catch (NoSuchFieldException | IllegalAccessException e) {
             e.printStackTrace();
-            return null;
+            return EMPTY_LIST;
         }
 
         DataChunk[] chunkArr = dataHandler.getClaimedChunks();
@@ -113,7 +113,7 @@ public class ClaimChunkHook implements Listener, Hook {
         return markers;
     }
 
-    private Options.@NonNull Builder options(@NonNull World world, @NonNull UUID owner) {
+    private @NotNull Options.Builder options(@NotNull World world, @NotNull UUID owner) {
         OfflinePlayer player = Bukkit.getOfflinePlayer(owner);
         String ownerName = player.getName() == null ? "unknown" : player.getName();
         return Options.builder()
@@ -127,7 +127,7 @@ public class ClaimChunkHook implements Listener, Hook {
                 );
     }
 
-    private @NonNull List<@NonNull ClaimChunkGroup> groupClaims(@NonNull List<@NonNull ClaimChunkClaim> claims) {
+    private @NotNull List<ClaimChunkGroup> groupClaims(@NotNull List<ClaimChunkClaim> claims) {
         // break groups down by owner
         Map<UUID, List<ClaimChunkClaim>> byOwner = new HashMap<>();
         for (ClaimChunkClaim claim : claims) {

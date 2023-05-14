@@ -24,17 +24,17 @@
 package net.pl3x.map.claims.hook.worldguard;
 
 import java.util.Collection;
-import libs.org.checkerframework.checker.nullness.qual.NonNull;
 import net.pl3x.map.core.markers.layer.WorldLayer;
 import net.pl3x.map.core.markers.marker.Marker;
 import net.pl3x.map.core.world.World;
+import org.jetbrains.annotations.NotNull;
 
 public class WorldGuardLayer extends WorldLayer {
     public static final String KEY = "worldguard";
 
     private final WorldGuardHook worldGuardHook;
 
-    public WorldGuardLayer(@NonNull WorldGuardHook worldGuardHook, @NonNull World world) {
+    public WorldGuardLayer(@NotNull WorldGuardHook worldGuardHook, @NotNull World world) {
         super(KEY, world, () -> WorldGuardConfig.LAYER_LABEL);
         this.worldGuardHook = worldGuardHook;
 
@@ -46,7 +46,7 @@ public class WorldGuardLayer extends WorldLayer {
     }
 
     @Override
-    public @NonNull Collection<@NonNull Marker<@NonNull ?>> getMarkers() {
+    public @NotNull Collection<Marker<?>> getMarkers() {
         return this.worldGuardHook.getClaims(getWorld());
     }
 }

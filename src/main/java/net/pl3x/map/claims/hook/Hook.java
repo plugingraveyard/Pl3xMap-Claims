@@ -28,24 +28,24 @@ import java.util.Collection;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.function.Supplier;
-import libs.org.checkerframework.checker.nullness.qual.NonNull;
-import libs.org.checkerframework.checker.nullness.qual.Nullable;
 import net.pl3x.map.claims.hook.claimchunk.ClaimChunkHook;
 import net.pl3x.map.claims.hook.griefdefender.GriefDefenderHook;
 import net.pl3x.map.claims.hook.griefprevention.GriefPreventionHook;
 import net.pl3x.map.claims.hook.worldguard.WorldGuardHook;
 import net.pl3x.map.core.markers.marker.Marker;
 import net.pl3x.map.core.world.World;
+import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
 
 public interface Hook {
-    Collection<@NonNull Marker<@NonNull ?>> EMPTY_LIST = new ArrayList<>();
-    Map<@NonNull String, @NonNull Hook> HOOKS = new HashMap<>();
+    Collection<Marker<?>> EMPTY_LIST = new ArrayList<>();
+    Map<String, Hook> HOOKS = new HashMap<>();
 
-    static @NonNull Collection<@NonNull Hook> hooks() {
+    static @NotNull Collection<Hook> hooks() {
         return HOOKS.values();
     }
 
-    static void add(@NonNull String name) {
+    static void add(@NotNull String name) {
         add(Impl.get(name));
     }
 
@@ -55,7 +55,7 @@ public interface Hook {
         }
     }
 
-    static void remove(@NonNull String name) {
+    static void remove(@NotNull String name) {
         HOOKS.remove(name);
     }
 
@@ -63,11 +63,11 @@ public interface Hook {
         HOOKS.clear();
     }
 
-    void registerWorld(@NonNull World world);
+    void registerWorld(@NotNull World world);
 
-    void unloadWorld(World world);
+    void unloadWorld(@NotNull World world);
 
-    @NonNull Collection<@NonNull Marker<@NonNull ?>> getClaims(@NonNull World world);
+    @NotNull Collection<Marker<?>> getClaims(@NotNull World world);
 
     enum Impl {
         CLAIMCHUNK("ClaimChunk", ClaimChunkHook::new),
@@ -76,18 +76,18 @@ public interface Hook {
         WORLDGUARD("WorldGuard", WorldGuardHook::new);
 
         private final String name;
-        private final Supplier<@NonNull Hook> hook;
+        private final Supplier<Hook> hook;
 
-        Impl(@NonNull String name, @NonNull Supplier<@NonNull Hook> hook) {
+        Impl(@NotNull String name, @NotNull Supplier<Hook> hook) {
             this.name = name;
             this.hook = hook;
         }
 
-        public @NonNull String getPluginName() {
+        public @NotNull String getPluginName() {
             return this.name;
         }
 
-        static final @NonNull Map<@NonNull String, @NonNull Impl> MAP = new HashMap<>();
+        static final @NotNull Map<String, Impl> MAP = new HashMap<>();
 
         static {
             for (Impl impl : values()) {
@@ -95,7 +95,7 @@ public interface Hook {
             }
         }
 
-        static @Nullable Impl get(@NonNull String name) {
+        static @Nullable Impl get(@NotNull String name) {
             return MAP.get(name);
         }
     }
