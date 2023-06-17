@@ -84,11 +84,11 @@ public final class GriefPreventionConfig extends AbstractConfig {
     @Comment("Popup text for container trusts if present")
     public static String MARKER_POPUP_CONTAINER = """
             Container: <span style="font-weight:bold;"><containers></span><br/>""";
-    @Key("settings.claim.popup.trust")
+    @Key("settings.claim.popup.access")
     @Comment("Popup text for trusts if present")
     public static String MARKER_POPUP_ACCESS = """
             Access: <span style="font-weight:bold;"><accessors></span><br/>""";
-    @Key("settings.claim.popup.trust")
+    @Key("settings.claim.popup.permission")
     @Comment("Popup text for trusts if present")
     public static String MARKER_POPUP_PERMISSION = """
             Permission: <span style="font-weight:bold;"><managers></span><br/>""";
