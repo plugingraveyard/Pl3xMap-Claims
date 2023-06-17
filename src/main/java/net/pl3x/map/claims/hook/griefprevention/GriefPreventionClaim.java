@@ -24,6 +24,7 @@
 package net.pl3x.map.claims.hook.griefprevention;
 
 import java.util.ArrayList;
+import java.util.UUID;
 import me.ryanhamshire.GriefPrevention.Claim;
 import net.pl3x.map.core.markers.Point;
 import net.pl3x.map.core.world.World;
@@ -35,6 +36,9 @@ public class GriefPreventionClaim {
     private final Claim claim;
     private final Point min;
     private final Point max;
+
+    private UUID ownerId;
+    private String ownerName;
 
     public GriefPreventionClaim(@NotNull World world, @NotNull Claim claim) {
         this.world = world;
@@ -59,7 +63,11 @@ public class GriefPreventionClaim {
     }
 
     public @NotNull String getOwnerName() {
-        return this.claim.getOwnerName();
+        if (this.claim.getOwnerID() != this.ownerId) {
+            this.ownerId = this.claim.getOwnerID();
+            this.ownerName = this.claim.getOwnerName();
+        }
+        return this.ownerName;
     }
 
     public @NotNull Point getMin() {
