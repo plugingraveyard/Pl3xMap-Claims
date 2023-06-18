@@ -31,6 +31,7 @@ import java.util.function.Supplier;
 import net.pl3x.map.claims.hook.claimchunk.ClaimChunkHook;
 import net.pl3x.map.claims.hook.griefdefender.GriefDefenderHook;
 import net.pl3x.map.claims.hook.griefprevention.GriefPreventionHook;
+import net.pl3x.map.claims.hook.plotsquared.P2Hook;
 import net.pl3x.map.claims.hook.worldguard.WorldGuardHook;
 import net.pl3x.map.core.markers.marker.Marker;
 import net.pl3x.map.core.world.World;
@@ -73,6 +74,7 @@ public interface Hook {
         CLAIMCHUNK("ClaimChunk", ClaimChunkHook::new),
         GRIEFDEFENDER("GriefDefender", GriefDefenderHook::new),
         GRIEFPREVENTION("GriefPrevention", GriefPreventionHook::new),
+        PLOTSQUARED("PlotSquared", P2Hook::new),
         WORLDGUARD("WorldGuard", WorldGuardHook::new);
 
         private final String name;

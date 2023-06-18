@@ -28,8 +28,9 @@ import java.awt.geom.Area;
 import java.awt.geom.Path2D;
 import java.awt.geom.PathIterator;
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.List;
-import net.pl3x.map.claims.Chunk;
+import net.pl3x.map.claims.Region;
 import net.pl3x.map.core.markers.Point;
 import net.pl3x.map.core.markers.marker.Marker;
 import net.pl3x.map.core.markers.marker.Polygon;
@@ -39,16 +40,18 @@ import org.jetbrains.annotations.NotNull;
 // https://stackoverflow.com/a/56326866
 
 public class ChunkMerge {
-    public static @NotNull Polygon getPoly(@NotNull String key, @NotNull List<? extends Chunk> chunks) {
+    public static @NotNull Polygon getPoly(@NotNull String key, @NotNull Collection<? extends Region> regions) {
         Area area = new Area();
-        for (Chunk chunk : chunks) {
-            int x = chunk.x() << 4;
-            int z = chunk.z() << 4;
+        for (Region region : regions) {
+            int minX = region.minX();
+            int maxX = region.maxX();
+            int minZ = region.minZ();
+            int maxZ = region.maxZ();
             Path2D path = new Path2D.Double();
-            path.moveTo(x, z);
-            path.lineTo(x, z + 16);
-            path.lineTo(x + 16, z + 16);
-            path.lineTo(x + 16, z);
+            path.moveTo(minX, minZ);
+            path.lineTo(minX, maxZ);
+            path.lineTo(maxX, maxZ);
+            path.lineTo(maxX, minZ);
             path.closePath();
             area.add(new Area(path));
         }

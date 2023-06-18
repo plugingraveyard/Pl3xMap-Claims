@@ -21,19 +21,14 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
  * SOFTWARE.
  */
-package net.pl3x.map.claims.hook.claimchunk;
+package net.pl3x.map.claims;
 
-import java.util.UUID;
-import net.pl3x.map.claims.Chunk;
-import org.jetbrains.annotations.NotNull;
+public interface Region {
+    int minX();
 
-public record ClaimChunkClaim(int minX, int minZ, @NotNull UUID owner) implements Chunk {
-    public boolean isTouching(@NotNull ClaimChunkClaim other) {
-        return owner().equals(other.owner()) && ( // same owner
-                (other.minX() == minX() && other.minZ() == minZ() - 1) || // touches north
-                (other.minX() == minX() && other.minZ() == minZ() + 1) || // touches south
-                (other.minX() == minX() - 1 && other.minZ() == minZ()) || // touches west
-                (other.minX() == minX() + 1 && other.minZ() == minZ()) // touches east
-        );
-    }
+    int maxX();
+
+    int minZ();
+
+    int maxZ();
 }

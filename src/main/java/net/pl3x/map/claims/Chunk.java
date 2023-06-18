@@ -23,8 +23,14 @@
  */
 package net.pl3x.map.claims;
 
-public interface Chunk {
-    int x();
+public interface Chunk extends Region {
+    @Override
+    default int maxX() {
+        return minX() + 16;
+    }
 
-    int z();
+    @Override
+    default int maxZ() {
+        return minX() + 16;
+    }
 }

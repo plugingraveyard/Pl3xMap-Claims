@@ -11,4 +11,5 @@ softdepend:
   - ClaimChunk
   - GriefDefender
   - GriefPrevention
+  - PlotSquared
   - WorldGuard
