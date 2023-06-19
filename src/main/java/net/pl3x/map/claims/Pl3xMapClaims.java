@@ -49,6 +49,7 @@ public final class Pl3xMapClaims extends JavaPlugin {
 
     @Override
     public void onDisable() {
+        getServer().getScheduler().cancelTasks(this);
         Hook.clear();
     }
 }
