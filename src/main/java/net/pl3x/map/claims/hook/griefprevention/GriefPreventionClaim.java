@@ -26,6 +26,8 @@ package net.pl3x.map.claims.hook.griefprevention;
 import java.util.ArrayList;
 import java.util.UUID;
 import me.ryanhamshire.GriefPrevention.Claim;
+import me.ryanhamshire.GriefPrevention.GriefPrevention;
+import me.ryanhamshire.GriefPrevention.Messages;
 import net.pl3x.map.core.markers.Point;
 import net.pl3x.map.core.world.World;
 import org.bukkit.Location;
@@ -63,6 +65,9 @@ public class GriefPreventionClaim {
     }
 
     public @NotNull String getOwnerName() {
+        if (isAdminClaim()) {
+            return GriefPrevention.instance.dataStore.getMessage(Messages.OwnerNameForAdminClaims);
+        }
         if (this.claim.getOwnerID() != this.ownerId) {
             this.ownerId = this.claim.getOwnerID();
             this.ownerName = this.claim.getOwnerName();
