@@ -26,7 +26,10 @@ package net.pl3x.map.claims;
 import java.util.Arrays;
 import net.pl3x.map.claims.hook.Hook;
 import net.pl3x.map.claims.listener.Pl3xMapListener;
+import net.pl3x.map.core.Pl3xMap;
+import net.pl3x.map.core.world.World;
 import org.bukkit.plugin.java.JavaPlugin;
+import org.jetbrains.annotations.NotNull;
 
 public final class Pl3xMapClaims extends JavaPlugin {
     @Override
@@ -45,11 +48,22 @@ public final class Pl3xMapClaims extends JavaPlugin {
         });
 
         getServer().getPluginManager().registerEvents(new Pl3xMapListener(), this);
+
+        Pl3xMap.api().getWorldRegistry().forEach(Pl3xMapClaims::registerWorld);
     }
 
     @Override
     public void onDisable() {
+        Pl3xMap.api().getWorldRegistry().forEach(Pl3xMapClaims::unloadWorld);
         getServer().getScheduler().cancelTasks(this);
         Hook.clear();
+    }
+
+    public static void registerWorld(@NotNull World world) {
+        Hook.hooks().forEach(hook -> hook.registerWorld(world));
+    }
+
+    public static void unloadWorld(@NotNull World world) {
+        Hook.hooks().forEach(hook -> hook.unloadWorld(world));
     }
 }

@@ -23,6 +23,7 @@
  */
 package net.pl3x.map.claims.listener;
 
+import net.pl3x.map.claims.Pl3xMapClaims;
 import net.pl3x.map.claims.hook.Hook;
 import net.pl3x.map.core.Pl3xMap;
 import net.pl3x.map.core.event.EventHandler;
@@ -30,7 +31,6 @@ import net.pl3x.map.core.event.EventListener;
 import net.pl3x.map.core.event.server.ServerLoadedEvent;
 import net.pl3x.map.core.event.world.WorldLoadedEvent;
 import net.pl3x.map.core.event.world.WorldUnloadedEvent;
-import net.pl3x.map.core.world.World;
 import org.bukkit.event.Listener;
 import org.bukkit.event.server.PluginDisableEvent;
 import org.bukkit.event.server.PluginEnableEvent;
@@ -53,12 +53,12 @@ public class Pl3xMapListener implements EventListener, Listener {
 
     @EventHandler
     public void onServerLoaded(@NotNull ServerLoadedEvent event) {
-        Pl3xMap.api().getWorldRegistry().forEach(this::registerWorld);
+        Pl3xMap.api().getWorldRegistry().forEach(Pl3xMapClaims::registerWorld);
     }
 
     @EventHandler
     public void onWorldLoaded(@NotNull WorldLoadedEvent event) {
-        registerWorld(event.getWorld());
+        Pl3xMapClaims.registerWorld(event.getWorld());
     }
 
     @EventHandler
@@ -67,9 +67,5 @@ public class Pl3xMapListener implements EventListener, Listener {
             Hook.hooks().forEach(hook -> hook.unloadWorld(event.getWorld()));
         } catch (Throwable ignore) {
         }
-    }
-
-    private void registerWorld(@NotNull World world) {
-        Hook.hooks().forEach(hook -> hook.registerWorld(world));
     }
 }
