@@ -1,11 +1,12 @@
 name: "${name}"
 main: "${group}.Pl3xMapClaims"
 version: "${version}"
-api-version: "1.20"
+api-version: "${apiVersion}"
 load: "POSTWORLD"
 authors: ${authors}
 description: "${description}"
 website: "${website}"
+
 softdepend:
   - Pl3xMap
   - ClaimChunk

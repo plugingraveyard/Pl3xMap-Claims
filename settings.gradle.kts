@@ -7,4 +7,4 @@ pluginManagement {
     }
 }
 
-rootProject.name = "Pl3xMap-Banners"
+rootProject.name = "Pl3xMap-Claims"

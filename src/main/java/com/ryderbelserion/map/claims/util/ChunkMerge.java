@@ -1,0 +1,80 @@
+/*
+ * MIT License
+ *
+ * Copyright (c) 2020-2023 William Blake Galbreath
+ *
+ * Permission is hereby granted, free of charge, to any person obtaining a copy
+ * of this software and associated documentation files (the "Software"), to deal
+ * in the Software without restriction, including without limitation the rights
+ * to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+ * copies of the Software, and to permit persons to whom the Software is
+ * furnished to do so, subject to the following conditions:
+ *
+ * The above copyright notice and this permission notice shall be included in all
+ * copies or substantial portions of the Software.
+ *
+ * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+ * IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+ * FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+ * AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+ * LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+ * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
+ * SOFTWARE.
+ */
+package com.ryderbelserion.map.claims.util;
+
+import java.awt.Shape;
+import java.awt.geom.Area;
+import java.awt.geom.Path2D;
+import java.awt.geom.PathIterator;
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.List;
+import com.ryderbelserion.map.claims.Region;
+import net.pl3x.map.core.markers.Point;
+import net.pl3x.map.core.markers.marker.Marker;
+import net.pl3x.map.core.markers.marker.Polygon;
+import net.pl3x.map.core.markers.marker.Polyline;
+import org.jetbrains.annotations.NotNull;
+
+// https://stackoverflow.com/a/56326866
+public class ChunkMerge {
+
+    public static @NotNull Polygon getPoly(@NotNull String key, @NotNull Collection<? extends Region> regions) {
+        Area area = new Area();
+
+        for (Region region : regions) {
+            int minX = region.minX();
+            int maxX = region.maxX();
+            int minZ = region.minZ();
+            int maxZ = region.maxZ();
+            Path2D path = new Path2D.Double();
+            path.moveTo(minX, minZ);
+            path.lineTo(minX, maxZ);
+            path.lineTo(maxX, maxZ);
+            path.lineTo(maxX, minZ);
+            path.closePath();
+            area.add(new Area(path));
+        }
+
+        return Marker.polygon(key, toLines(key, area));
+    }
+
+    private static @NotNull List<Polyline> toLines(@NotNull String key, @NotNull Shape shape) {
+        List<Polyline> lines = new ArrayList<>();
+        Polyline line = new Polyline(key, Point.ZERO);
+        double[] coords = new double[6];
+        PathIterator iter = shape.getPathIterator(null, 1);
+
+        while (!iter.isDone()) {
+            switch (iter.currentSegment(coords)) {
+                case PathIterator.SEG_MOVETO -> line = new Polyline(key, Point.of(coords[0], coords[1]));
+                case PathIterator.SEG_LINETO -> line.addPoint(Point.of(coords[0], coords[1]));
+                case PathIterator.SEG_CLOSE -> lines.add(line);
+            }
+            iter.next();
+        }
+
+        return lines;
+    }
+}
