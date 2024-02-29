@@ -1,5 +1,5 @@
 plugins {
-    id("io.papermc.paperweight.userdev") version "1.5.7"
+    id("io.papermc.paperweight.userdev") version "1.5.9"
 
     `java-library`
 }
@@ -23,8 +23,12 @@ repositories {
     }
 }
 
+rootProject.version = if (System.getenv("BUILD_NUMBER") != null) "${rootProject.version}-${System.getenv("BUILD_NUMBER")}" else rootProject.version
+
+val mcVersion = providers.gradleProperty("mcVersion").get()
+
 dependencies {
-    paperweight.paperDevBundle("1.20.2-R0.1-SNAPSHOT")
+    paperweight.paperDevBundle("$mcVersion-R0.1-SNAPSHOT")
 
     compileOnly("com.github.cjburkey01", "ClaimChunk", "0.0.22")
 
@@ -38,7 +42,7 @@ dependencies {
     compileOnly("com.plotsquared:PlotSquared-Core")
     compileOnly("com.plotsquared:PlotSquared-Bukkit")
 
-    compileOnly("maven.modrinth", "pl3xmap", "1.20.2-474")
+    compileOnly("maven.modrinth", "pl3xmap", providers.gradleProperty("pl3xmapVersion").get())
 }
 
 java {
