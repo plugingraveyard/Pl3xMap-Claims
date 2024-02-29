@@ -16,7 +16,7 @@
 Don't see your claim plugin listed here? Let me know on Discord, and I'll see about adding it.
 
 ## Downloads
-https://ci.crazycrew.us/view/ryderbelserion/job/Pl3xMap-Claims/
+https://jenkins.crazycrew.us/view/other/job/Pl3xMap-Claims/
 
 ## Installation
 

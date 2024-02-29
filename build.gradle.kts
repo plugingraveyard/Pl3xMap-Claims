@@ -25,7 +25,7 @@ repositories {
 
 rootProject.version = if (System.getenv("BUILD_NUMBER") != null) "${rootProject.version}-${System.getenv("BUILD_NUMBER")}" else rootProject.version
 
-val mcVersion = providers.gradleProperty("mcVersion").get()
+val mcVersion = providers.gradleProperty("minecraftVersion").get()
 
 dependencies {
     paperweight.paperDevBundle("$mcVersion-R0.1-SNAPSHOT")
