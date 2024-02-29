@@ -62,7 +62,9 @@ tasks {
     val jarsDir = File("$rootDir/jars")
 
     assemble {
-        if (jarsDir.exists()) jarsDir.delete() else jarsDir.mkdirs()
+        if (jarsDir.exists()) jarsDir.delete()
+
+        jarsDir.mkdirs()
 
         dependsOn(reobfJar)
     }
