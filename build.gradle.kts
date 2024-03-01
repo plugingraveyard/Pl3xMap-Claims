@@ -75,7 +75,18 @@ tasks {
         downloadPlugins {
             hangar("Chunky", "1.3.136")
 
+            modrinth("pl3xmap", providers.gradleProperty("pl3xmapVersion").get())
+
+            modrinth("griefprevention", "16.18.2")
+
+            github("cjburkey01", "ClaimChunk", "0.0.23-RC8", "claimchunk-0.0.23-RC8-plugin.jar")
+
             url("https://ci.lucko.me/job/spark/401/artifact/spark-bukkit/build/libs/spark-1.10.60-bukkit.jar")
+
+            url("https://download.luckperms.net/1532/bukkit/loader/LuckPerms-Bukkit-5.4.119.jar")
+
+            url("https://ci.enginehub.org/repository/download/bt11/22585:id/worldguard-bukkit-7.0.10-SNAPSHOT-dist.jar?branch=version/7.0.x&guest=1")
+            url("https://ci.enginehub.org/repository/download/bt10/23464:id/worldedit-bukkit-7.2.20-dist.jar?branch=version/7.2.x&guest=1")
         }
     }
 

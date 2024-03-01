@@ -47,6 +47,8 @@ commands:
   silent-commandblock-console: false
   spam-exclusions:
   - /skill
+  - /gd:callback
+  - /gd:pagination
   replace-commands:
   - setblock
   - summon
@@ -171,6 +173,8 @@ world-settings:
     view-distance: default
     item-despawn-rate: 6000
     nerf-spawner-mobs: false
+    verbose: false
+  worldeditregentempworld:
     verbose: false
 config-version: 12
 stats:
