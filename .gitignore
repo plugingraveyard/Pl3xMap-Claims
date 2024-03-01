@@ -4,3 +4,13 @@
 build
 
 jars
+
+run
+
+!run/config
+!run/spigot.yml
+!run/bukkit.yml
+!run/eula.txt
+!run/server.properties
+!run/plugins
+!run/ops.json
