@@ -11,6 +11,8 @@ base {
 }
 
 repositories {
+    maven("https://ci.ender.zone/plugin/repository/everything/")
+
     maven("https://oss.sonatype.org/content/repositories/snapshots/")
 
     maven("https://repo.glaremasters.me/repository/bloodshot")
@@ -43,6 +45,8 @@ dependencies {
     compileOnly("com.github.TechFortress", "GriefPrevention", "16.18")
 
     compileOnly("com.sk89q.worldguard", "worldguard-bukkit", "7.0.8-SNAPSHOT")
+
+    compileOnly("com.massivecraft", "Factions", "1.6.9.5-U0.6.33")
 
     implementation(platform("com.intellectualsites.bom:bom-1.18.x:1.28"))
     compileOnly("com.plotsquared:PlotSquared-Core")
