@@ -17,7 +17,7 @@ Don't see your claim plugin listed here? Let me know on Discord, and I'll see ab
 ## Downloads
 https://jenkins.crazycrew.us/view/other/job/Pl3xMap-Claims/
 
-## Supporrt
+## Support
 https://discord.gg/badbones-s-live-chat-182615261403283459
 
 ## Installation
