@@ -7,7 +7,6 @@
 </div>
 
 ## Supported claims plugins
-
 * [ClaimChunk](https://www.spigotmc.org/resources/claimchunk.44458/)
 * [GriefDefender](https://www.spigotmc.org/resources/.68900/)
 * [GriefPrevention](https://www.spigotmc.org/resources/.1884/)
@@ -18,8 +17,10 @@ Don't see your claim plugin listed here? Let me know on Discord, and I'll see ab
 ## Downloads
 https://jenkins.crazycrew.us/view/other/job/Pl3xMap-Claims/
 
-## Installation
+## Supporrt
+https://discord.gg/badbones-s-live-chat-182615261403283459
 
+## Installation
 1) Place the jar inside your server's `plugins` folder
 2) Restart your server
 3) Edit the config(s) to your liking
