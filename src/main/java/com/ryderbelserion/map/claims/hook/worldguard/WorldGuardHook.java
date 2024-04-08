@@ -89,6 +89,7 @@ public class WorldGuardHook implements Hook {
                     } else {
                         marker = Marker.rectangle(key, claim.getMin(), claim.getMax());
                     }
+
                     return marker.setOptions(getOptions(claim));
                 })
                 .collect(Collectors.toSet());

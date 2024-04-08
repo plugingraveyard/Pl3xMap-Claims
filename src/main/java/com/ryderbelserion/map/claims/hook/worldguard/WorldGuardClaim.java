@@ -33,6 +33,7 @@ import java.util.List;
 import java.util.Map;
 import net.pl3x.map.core.markers.Point;
 import net.pl3x.map.core.world.World;
+import org.bukkit.Bukkit;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
@@ -46,6 +47,8 @@ public class WorldGuardClaim {
     public WorldGuardClaim(@NotNull World world, @NotNull ProtectedRegion region) {
         this.world = world;
         this.region = region;
+
+        this.region.getOwners().getPlayers().forEach(player -> Bukkit.getLogger().warning(player));
 
         BlockVector3 min = this.region.getMinimumPoint();
         BlockVector3 max = this.region.getMaximumPoint();
