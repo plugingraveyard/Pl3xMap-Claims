@@ -48,8 +48,6 @@ public class WorldGuardClaim {
         this.world = world;
         this.region = region;
 
-        this.region.getOwners().getPlayers().forEach(player -> Bukkit.getLogger().warning(player));
-
         BlockVector3 min = this.region.getMinimumPoint();
         BlockVector3 max = this.region.getMaximumPoint();
         this.min = Point.of(min.getX(), min.getZ());
